@@ -5,7 +5,7 @@ const publicRoutes=[
     {path:'/',component:HomePage,layout:DefaultLayout},
     {path:'/following',component:FollowingPage,layout:DefaultLayout},
     {path:'/profile',component:ProfilePage,layout:DefaultLayout},
-    {path:'/update',component:UploadPage,layout:Navbar}
+    {path:'/upload',component:UploadPage,layout:null}
 ];
 const privateRoutes=[
     {} 

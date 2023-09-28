@@ -8,15 +8,15 @@ type DefaultLayoutProps = {
 
 const DefaultLayout = (props: DefaultLayoutProps) => {
     return (
-        <div>
+        <>
             <Navbar />
-            <div className=''>
-                <Sidebar />
-                <div>
+            <div className='max-w-[1140px] pt-[70px] m-auto'> 
+                <Sidebar /> 
+                <div >
                     {props.children}
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
