@@ -2,10 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@300&family=Roboto+Serif:ital,opsz,wght@0,8..144,100;0,8..144,200;0,8..144,300;0,8..144,400;1,8..144,100;1,8..144,200;1,8..144,300&display=swap');
-body{
-    font-family:'Roboto',sans-serif;
-    font-size:1.6rem;
-        line-weight:1.5;
-        text-rendering:optimizespeed;
+@import url("https://fonts.googleapis.com/css2?family=Bitter:wght@300&family=Roboto+Serif:ital,opsz,wght@0,8..144,100;0,8..144,200;0,8..144,300;0,8..144,400;1,8..144,100;1,8..144,200;1,8..144,300&display=swap");
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.6rem;
+  line-weight: 1.5;
+  text-rendering: optimizespeed;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background-color: white;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(22, 24, 35, 0.06);
 }

@@ -7,14 +7,14 @@ import { ImMusic } from 'react-icons/im';
 import PostMainLike from '../postMainLike/postMainLike';
 const PostMain = (post: VideoItem) => {
     useEffect(() => {
-        // const video = document.getElementById(`video-${post.videoId}`) as HTMLVideoElement
-        // const postMainElement = document.getElementById(`PostMain-${post.videoId}`)
-        // if (postMainElement) {
-        //     let observer = new IntersectionObserver((entries) => {
-        //         entries[0].isIntersecting ? video.play() : video.pause();
-        //     }, { threshold: [0.6] });
-        //     observer.observe(postMainElement);
-        // }
+        const video = document.getElementById(`video-${post.videoId}`) as HTMLVideoElement
+        const postMainElement = document.getElementById(`PostMain-${post.videoId}`)
+        if (postMainElement) {
+            let observer = new IntersectionObserver((entries) => {
+                entries[0].isIntersecting ? video.play() : video.pause();
+            }, { threshold: [0.6] });
+            observer.observe(postMainElement);
+        }
     }, []);
     return (
         <>
@@ -36,7 +36,7 @@ const PostMain = (post: VideoItem) => {
                         </button>
                     </div>
                     <p className='text-[15px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]'>{post.caption}</p>
-                    <p className='text-[14px] text-gray-500 pb-0.5'>#fun #cool #02221221112 #supperAwesome</p>
+                    <p className='text-[14px] text-gray-500 pb-0.5'>#fun #cool #02221221112 #supperAwesome </p>
                     <p className='text-[14px] pb-0.5 flex items-center font-semibold'>
                         <ImMusic size='17' />
                         <span className='px-1'>Original sound- AWESOME</span>

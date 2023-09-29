@@ -8,7 +8,7 @@ const Navbar = () => {
     console.log(event.target.value);
   }
   const uploadHandler = () => {
-    console.log('Treee');
+    
   }
   return (
     <>
