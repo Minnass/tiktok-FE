@@ -139,7 +139,6 @@ const UploadPage = () => {
             </div>
           }
 
-
           <div className="mt-4 mb-6">
             <div className="flex bg-[#F8F8F8] py-4 px-6">
               <div>

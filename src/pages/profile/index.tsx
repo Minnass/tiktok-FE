@@ -2,6 +2,8 @@ import React from 'react'
 import { BsPencil } from "react-icons/bs"
 import { User } from '../../props';
 import PostUser from '../../components/main/video/postUser';
+import { EditProfileOverlay } from '../../components';
+import {useState} from 'react'
 const ProfilePage = () => {
 
   const user: User = {
@@ -11,8 +13,13 @@ const ProfilePage = () => {
     userID: '12',
     userName: 'trieu3706_',
   }
+
+  const [openedProfileEditor,setOpenedProfileEditor]=useState<boolean>(false);
+
+
   return (
     <>
+      {openedProfileEditor&&<EditProfileOverlay openedProfileEditorListener={setOpenedProfileEditor} />}
       <div className="ml-[90px] min-w-[460px] 2xl:pl-[185px] lg:pl-[160px] lg:pr-0 w-[calc(100%-90px)] pr-3 max-w-[1800px] 2xl:mx-auto">
 
         <div className="flex ">
@@ -37,7 +44,7 @@ const ProfilePage = () => {
 
             {true ? (
               <button
-                // onClick={() => setIsEditProfileOpen(isEditProfileOpen = !isEditProfileOpen)}
+                onClick={()=>setOpenedProfileEditor(true)}
                 className="flex item-center rounded-md py-1.5 px-3.5 mt-3 text-[15px] font-semibold border hover:bg-gray-100"
               >
                 <BsPencil className="mt-0.5 mr-1" size="18" />

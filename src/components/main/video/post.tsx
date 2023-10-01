@@ -20,15 +20,15 @@ const PostMain = (post: VideoItem) => {
         <>
             <div id={`PostMain-${post.videoId}`} className='flex border-b py-5 min-w-[400px]'>
                 <div className='cursor-pointer '>
-                <Link to={`/profile/${post.profile?.userID}`}>
-                    <img className='rounded-full max-h-[60px]' width="60" src={post?.profile?.avatar} />
-                </Link>
+                    <Link to={`/profile/${post.profile?.userID}`}>
+                        <img className='rounded-full max-h-[60px]' width="60" src={post?.profile?.avatar} />
+                    </Link>
                 </div>
                 <div className='pl-3 w-full px-4 text-left'>
                     <div className='flex items-center justify-between pb-0.5'>
-                        <Link to={`/profile/${post.profile?.userID }`}>
+                        <Link to={`/profile/${post.profile?.userID}`}>
                             <span className='font-bold hover:underline cursor-pointer'>
-                                {post.profile?.displayedName }
+                                {post.profile?.displayedName}
                             </span>
                         </Link>
                         <button className='border text-[15px] px-[21px] py-0.5 border-[#F02C56] text-[#F02C56] hover:bg-[#ffeef2] font-semibold rounded-md'>
@@ -43,17 +43,17 @@ const PostMain = (post: VideoItem) => {
                         <AiFillHeart size='20' />
                     </p>
                     <div className='mt-2.5 flex'>
-                        <div className='relative min-h-[480px] max-h-[580px]  max-w-[260px] flex items-center bg-black rounded-xl cursor-pointer'>
-                            <video 
-                            id={`video-${post.videoId}`}
-                            controls
-                            muted
-                            className='roundedxl object-cover mx-auto h-full'
-                            src={require('../../../utils/beach.mp4')}/>
+                        <div className='relative min-h-[480px] max-h-[580px]   max-w-[260px] flex items-center    cursor-pointer'>
+                            <video
+                                id={`video-${post.videoId}`}
+                                controls
+                                muted
+                                className=' object-cover mx-auto rounded-lg h-full'
+                                src={require('../../../utils/beach.mp4')} />
                             <img
-                            className='absolute right-2 bottom-10'
-                            width='90'
-                            src='../../../utils/tikter.png'
+                                className='absolute right-2 bottom-10'
+                                width='90'
+                                src={require('../../../utils/tiktok-logo-white.png')}
                             />
                         </div>
                         <PostMainLike videoId={post.videoId} likes={post.likes} comments={post.comments} />
