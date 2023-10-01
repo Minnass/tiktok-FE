@@ -7,6 +7,20 @@ import { Link } from 'react-router-dom'
 import { VideoItem } from '../../../props'
 
 const PostUser = (post:VideoItem) => {
+
+    useEffect(() => {
+        const video = document.getElementById(`video${post?.videoId}`) as HTMLVideoElement
+
+        setTimeout(() => {
+            video.addEventListener('mouseenter', () => { video.play() })
+            video.addEventListener('mouseleave', () => { video.pause() })
+        }, 50)
+        return ()=>{
+            video.removeEventListener('mouseenter',()=>video.play())
+            video.removeEventListener('mouseleave',()=>video.pause())
+        }
+    }, [])
+
   return (
     <>
     <div className="relative brightness-90 hover:brightness-[1.1] cursor-pointer">
@@ -22,7 +36,8 @@ const PostUser = (post:VideoItem) => {
                     loop
                     className="aspect-[3/4] object-cover rounded-md" 
                     src={require('../../../utils/beach.mp4')}
-                />
+                >
+                </video>
             </Link>
         )}
         <div className="px-1">

@@ -1,11 +1,12 @@
-import { HomePage,FollowingPage,ProfilePage,UploadPage } from "../pages"; 
+import { HomePage,FollowingPage,ProfilePage,UploadPage, PostPage } from "../pages"; 
 import {DefaultLayout,Navbar} from '../components/'
 
 const publicRoutes=[
-    {path:'/',component:HomePage,layout:DefaultLayout},
-    {path:'/following',component:FollowingPage,layout:DefaultLayout},
-    {path:'/profile',component:ProfilePage,layout:DefaultLayout},
-    {path:'/upload',component:UploadPage,layout:null}
+    {path:'/',component:HomePage},
+    {path:'/following',component:FollowingPage},
+    {path:'/userID',component:ProfilePage},
+    {path:'/upload',component:UploadPage},
+    {path:'/:userID/:postID' ,component:PostPage}
 ];
 const privateRoutes=[
     {} 

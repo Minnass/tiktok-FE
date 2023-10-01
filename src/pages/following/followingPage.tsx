@@ -1,11 +1,10 @@
 import React from 'react'
-import { DefaultLayout, PostMain } from '../../components'
-import FollowingUser from '../../components/sidebar/followingItem/followingItem'
-export const HomePage = () => {
+import { DefaultLayout, PostMain } from '../../components';
+const FollowingPage = () => {
   return (
     <DefaultLayout>
       <div className='w-[calc(100%-90px)] max-w-[690px] ml-auto '  >
-        <PostMain
+      <PostMain
           videoId='12312'
           caption='Những con cá lớn '
           videoURL='../../utils/beach.mp4'
@@ -58,4 +57,4 @@ export const HomePage = () => {
   )
 }
 
-export default HomePage
+export default FollowingPage;

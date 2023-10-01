@@ -6,7 +6,7 @@ import { PiKnifeLight } from 'react-icons/pi'
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import PopUp from '../../components/popup/popup';
 import { Link } from 'react-router-dom';
-import {toast,ToastContainer} from 'react-toastify' 
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
 const UploadPage = () => {
@@ -25,6 +25,20 @@ const UploadPage = () => {
       const fileUrl = URL.createObjectURL(file);
       setFileDisplay(fileUrl);
       setFile(file);
+      const videoElement = document.createElement('video');
+      videoElement.src = fileUrl;
+      videoElement.addEventListener('loadedmetadata', () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
+        videoElement.currentTime = 1000;
+        const ctx = canvas.getContext('2d');
+        ctx!.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+        const dataURL = canvas.toDataURL('image/jpeg'); // Change format as needed
+        console.log(dataURL);
+        // Set the background image data in state
+
+      });
     }
   }
   const clearVideo = () => {
@@ -44,7 +58,7 @@ const UploadPage = () => {
     setHasPopUp(false)
   }
 
-  
+
   return (
     <>
       <div className='fixed bg-white z-30 flex items-center w-full border-b top-0 h-[60px]'>
@@ -152,13 +166,14 @@ const UploadPage = () => {
               </div>
               <div className="flex justify-end max-w-[130px] w-full h-full text-center my-auto">
                 <button className="px-8 py-1.5 text-white text-[15px] bg-[#5623ff] rounded-sm"
-                  onClick={()=>{toast.warning("Feature has not been finished!",{
-                    autoClose:1000,
-                    theme:'colored'
-                  })
-                }}
+                  onClick={() => {
+                    toast.warning("Feature has not been finished!", {
+                      autoClose: 1000,
+                      theme: 'colored'
+                    })
+                  }}
                 >
-                  <ToastContainer/>
+                  <ToastContainer />
                   Edit
                 </button>
               </div>

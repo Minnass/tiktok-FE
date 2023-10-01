@@ -2,7 +2,7 @@ import React from 'react'
 import { BsPencil } from "react-icons/bs"
 import { User } from '../../props';
 import PostUser from '../../components/main/video/postUser';
-import { EditProfileOverlay } from '../../components';
+import { DefaultLayout, EditProfileOverlay } from '../../components';
 import {useState} from 'react'
 const ProfilePage = () => {
 
@@ -18,7 +18,7 @@ const ProfilePage = () => {
 
 
   return (
-    <>
+    <DefaultLayout>
       {openedProfileEditor&&<EditProfileOverlay openedProfileEditorListener={setOpenedProfileEditor} />}
       <div className="ml-[90px] min-w-[460px] 2xl:pl-[185px] lg:pl-[160px] lg:pr-0 w-[calc(100%-90px)] pr-3 max-w-[1800px] 2xl:mx-auto">
 
@@ -82,29 +82,29 @@ const ProfilePage = () => {
                 videoId='121' 
               />
               <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-                videoId='121' 
+                videoId='122' 
               />
               <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-                videoId='121' 
+                videoId='123' 
               /> 
               <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep 1212312 123123 123123213123  qua'
-                videoId='121' 
+                videoId='124' 
               /> 
               <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-                videoId='121' 
+                videoId='125' 
               /> 
               <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-                videoId='121' 
+                videoId='126' 
               /> 
               <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-                videoId='121' 
+                videoId='127' 
               /> 
               
           </div>
 
         <div className="pb-20" />
       </div>
-    </>
+    </DefaultLayout>
   )
 }
 
