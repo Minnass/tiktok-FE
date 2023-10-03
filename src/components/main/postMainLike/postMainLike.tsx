@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { VideoItem } from '../../../props';
+import { VideoItem } from '../../../types';
 import { AiFillHeart } from 'react-icons/ai';
 import { BiLoaderCircle } from 'react-icons/bi';
 import { FaShare, FaCommentDots } from 'react-icons/fa'

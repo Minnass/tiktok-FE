@@ -10,3 +10,6 @@ export interface VideoItem{
             uploadDate?:Date,
             profile?:User
 }
+export interface LikedVideo{
+            videoId:string
+}

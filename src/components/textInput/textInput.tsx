@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextInputCompType } from '../../props'
+import { TextInputCompType } from '../../types'
 
 const TextInput = ({ string, inputType, placeHolder, error, onUpdate }: TextInputCompType) => {
     return (
@@ -11,9 +11,11 @@ const TextInput = ({ string, inputType, placeHolder, error, onUpdate }: TextInpu
                 autoComplete='off'
                 onChange={(event) => onUpdate(event.target.value)}
             />
-            <div className='text-red-500 text-[14px] font-semibold'>
-                {error ? (error) : null}
-            </div>
+            {
+                <div className='text-red-500 text-[12px] font-light px-1'>
+                    {error ? (error) : null}
+                </div>
+            }
         </>
     )
 }

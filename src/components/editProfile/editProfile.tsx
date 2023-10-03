@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { Cropper } from 'react-advanced-cropper'
 import 'react-advanced-cropper/dist/style.css'
 import { useState } from 'react'
-import { CropperDimensions, ErrorObject, ProfileEditorProps, TextInputCompType } from '../../props'
+import { CropperDimensions, ErrorObject, ProfileEditorProps, TextInputCompType } from '../../types'
 import { AiOutlineClose } from 'react-icons/ai';
 import { BsPencil } from 'react-icons/bs';
 import TextInput from '../textInput/textInput';
@@ -59,7 +59,7 @@ const EditProfile = (props: ProfileEditorProps) => {
           relative bg-white w-full max-w-[700px] sm:h-[580px] h-[655px] mx-2 p-4 rounded-lg mb-10
                         ${!uploadedImage ? 'h-[655px]' : 'h-[580px]'}
                     `}
-        > 
+        >
           <div className="absolute flex items-center justify-between w-full p-5 left-0 top-0 border-b border-b-gray-300">
             <h1 className="text-[22px] font-medium">
               Edit profile

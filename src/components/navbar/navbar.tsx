@@ -2,13 +2,29 @@ import React from 'react'
 import { BiSearch, BiUser } from 'react-icons/bi'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { BsThreeDotsVertical } from 'react-icons/bs'
+import { useNavigate } from 'react-router-dom'
+import { RootState, AppDispatch } from '../../store/store';
+import { setLoginRequestStatus, selectIsLoginRequest } from '../../store/auth'
+import { useSelector, useDispatch } from 'react-redux';
+
 const logo_path = require('../../utils/tikter.png');
+
 const Navbar = () => {
+  //redux section
+  const isLoggedIRequest = useSelector((state: RootState) => selectIsLoginRequest(state));
+  const dispatch: AppDispatch = useDispatch();
+  //
+  const navigater = useNavigate();
   const handleSearchName = (event: { target: { value: string } }) => {
     console.log(event.target.value);
   }
+
   const uploadHandler = () => {
-    
+    if (!isLoggedIRequest) {
+      dispatch(setLoginRequestStatus(true));
+      return;
+    }
+    navigater('/upload');
   }
   return (
     <>

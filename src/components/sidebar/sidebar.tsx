@@ -44,7 +44,7 @@ const Sidebar = () => {
             <p className="pt-4 px-2">Help Safety Terms Privacy Creator Portal Community Guidelines</p>
             <p className="pt-4 px-2">© 2023 TikTok</p>
           </div>
-
+        
           <div className="pb-14"></div>
         </div>
       </div>

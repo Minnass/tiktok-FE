@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect } from 'react'
-import { VideoItem } from '../../../props'
+import { VideoItem } from '../../../types'
 import { Link, useLocation } from 'react-router-dom';
 import { AiFillHeart } from 'react-icons/ai';
 import { ImMusic } from 'react-icons/im';
@@ -32,7 +32,7 @@ const PostMain = (post: VideoItem) => {
                                 {post.profile?.displayedName}
                             </span>
                         </Link>
-                        {location.pathname=='/' &&
+                        {location.pathname == '/' &&
                             <button className='border text-[15px] px-[21px] py-0.5 border-[#F02C56] text-[#F02C56] hover:bg-[#ffeef2] font-semibold rounded-md'>
                                 Follow
                             </button>

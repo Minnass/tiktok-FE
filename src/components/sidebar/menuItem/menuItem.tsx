@@ -1,5 +1,5 @@
 import React from 'react'
-import { MenuItemsTypes } from '../../../props/'
+import { MenuItemsTypes } from '../../../types'
 import { AiOutlineHome } from 'react-icons/ai'
 import { RiGroupLine } from 'react-icons/ri'
 import { BsCameraVideo } from 'react-icons/bs'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { PopUpModel } from '../../props'
+import { PopUpModel } from '../../types'
 import { motion } from 'framer-motion'
 
 const PopUp = ({ tittle, content, firstOption, secondOption, eventListener }: PopUpModel) => {

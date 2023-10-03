@@ -1,9 +1,9 @@
 import React from 'react'
 import { BsPencil } from "react-icons/bs"
-import { User } from '../../props';
+import { User } from '../../types';
 import PostUser from '../../components/main/video/postUser';
 import { DefaultLayout, EditProfileOverlay } from '../../components';
-import {useState} from 'react'
+import { useState } from 'react'
 const ProfilePage = () => {
 
   const user: User = {
@@ -14,12 +14,12 @@ const ProfilePage = () => {
     userName: 'trieu3706_',
   }
 
-  const [openedProfileEditor,setOpenedProfileEditor]=useState<boolean>(false);
+  const [openedProfileEditor, setOpenedProfileEditor] = useState<boolean>(false);
 
 
   return (
     <DefaultLayout>
-      {openedProfileEditor&&<EditProfileOverlay openedProfileEditorListener={setOpenedProfileEditor} />}
+      {openedProfileEditor && <EditProfileOverlay openedProfileEditorListener={setOpenedProfileEditor} />}
       <div className="ml-[90px] min-w-[460px] 2xl:pl-[185px] lg:pl-[160px] lg:pr-0 w-[calc(100%-90px)] pr-3 max-w-[1800px] 2xl:mx-auto">
 
         <div className="flex ">
@@ -44,7 +44,7 @@ const ProfilePage = () => {
 
             {true ? (
               <button
-                onClick={()=>setOpenedProfileEditor(true)}
+                onClick={() => setOpenedProfileEditor(true)}
                 className="flex item-center rounded-md py-1.5 px-3.5 mt-3 text-[15px] font-semibold border hover:bg-gray-100"
               >
                 <BsPencil className="mt-0.5 mr-1" size="18" />
@@ -69,38 +69,38 @@ const ProfilePage = () => {
           </div>
         </div>
         <p className="text-left pt-4 mr-4 text-gray-500 font-light text-[15px] pl-1.5 max-w-[500px]">
-          {(user.Bio)?(user.Bio):('No bio yet.')}
+          {(user.Bio) ? (user.Bio) : ('No bio yet.')}
         </p>
-       
+
         <ul className="w-full flex items-center pt-4 border-b">
           <li className="w-60 text-center py-2 text-[17px] font-semibold border-b-2 border-b-black">Videos</li>
           <li className="w-60 text-gray-500 text-center py-2 text-[17px] font-semibold">Liked</li>
         </ul>
-          <div className="mt-4 grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3">
-            
-              <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-                videoId='121' 
-              />
-              <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-                videoId='122' 
-              />
-              <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-                videoId='123' 
-              /> 
-              <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep 1212312 123123 123123213123  qua'
-                videoId='124' 
-              /> 
-              <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-                videoId='125' 
-              /> 
-              <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-                videoId='126' 
-              /> 
-              <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-                videoId='127' 
-              /> 
-              
-          </div>
+        <div className="mt-4 grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3">
+
+          <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
+            videoId='121'
+          />
+          <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
+            videoId='122'
+          />
+          <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
+            videoId='123'
+          />
+          <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep 1212312 123123 123123213123  qua'
+            videoId='124'
+          />
+          <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
+            videoId='125'
+          />
+          <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
+            videoId='126'
+          />
+          <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
+            videoId='127'
+          />
+
+        </div>
 
         <div className="pb-20" />
       </div>

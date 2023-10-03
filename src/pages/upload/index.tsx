@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { UploadError } from '../../props';
+import { UploadError } from '../../types';
 import { BiLoader, BiLoaderCircle, BiSolidCloudUpload } from 'react-icons/bi';
 import { PiKnifeLight } from 'react-icons/pi'
 import { AiOutlineCheckCircle } from 'react-icons/ai';
