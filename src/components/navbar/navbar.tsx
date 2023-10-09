@@ -2,16 +2,18 @@ import React from 'react'
 import { BiSearch, BiUser } from 'react-icons/bi'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { RootState, AppDispatch } from '../../store/store';
-import { setLoginRequestStatus, selectIsLoginRequest } from '../../store/auth'
+import { setLoginRequestStatus, selectIsLoginRequest, selectIsLoggedIn } from '../../store/auth'
 import { useSelector, useDispatch } from 'react-redux';
+import { setNextRouter } from '../../store/nextRouter'
 
 const logo_path = require('../../utils/tikter.png');
 
 const Navbar = () => {
   //redux section
   const isLoggedIRequest = useSelector((state: RootState) => selectIsLoginRequest(state));
+  const isLoggedIn=useSelector((state:RootState)=>selectIsLoggedIn(state));
   const dispatch: AppDispatch = useDispatch();
   //
   const navigater = useNavigate();
@@ -20,19 +22,23 @@ const Navbar = () => {
   }
 
   const uploadHandler = () => {
-    if (!isLoggedIRequest) {
+    if (!isLoggedIRequest&&!isLoggedIn) {
       dispatch(setLoginRequestStatus(true));
+      dispatch(setNextRouter('./upload'))
       return;
     }
     navigater('/upload');
+  }
+  const loginHandler=()=>{
+    dispatch(setLoginRequestStatus(true));
   }
   return (
     <>
       <div id="TopNav" className='fixed bg-white z-30 flex items-center w-full border-b h-[60px] '>
         <div className={`flex items-center justify-between gap-6 w-full px-4 mx-auto  max-w-[1140px] `}>
-          <a href='/'>
+          <Link to='/'>
             <img className='max-h-full w-[115px]' src={logo_path} alt='Logo' />
-          </a>
+          </Link>
           <div className='relative hidden w-full md:flex items-center justify-end bg-[#F1F1F2] rounded-full max-w-[430px]'>
             <input type="text"
               onChange={handleSearchName}
@@ -62,10 +68,12 @@ const Navbar = () => {
               <AiOutlinePlus color="#000000" size="22" />
               <span className='px-2 font-medium text-[15px]' >Upload</span>
             </button>
-            {!true ? (
+            {!isLoggedIn ? (
               <div className='flex items-center'>
-                <button className='flex items-center bg-[#F02C56] text-white border rounded-md px-3 py-[6px]'>
-                  <span className='whitespace-nowrap mx-4 font-medium text-[15px]'>Log in</span>
+                <button className='flex items-center h-full bg-[#F02C56] text-white border rounded-md px-3 py-[6px]'>
+                  <span className='whitespace-nowrap mx-4 font-medium text-[15px]'
+                  onClick={()=>loginHandler()}
+                  >Log in</span>
                 </button>
                 <BsThreeDotsVertical color='#161724' size='25' />
               </div>

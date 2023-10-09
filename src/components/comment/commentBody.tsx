@@ -3,13 +3,29 @@ import { VideoItem } from '../../types'
 import SingleComment from './singleComment'
 import { useState } from 'react'
 import { BiLoaderCircle } from 'react-icons/bi'
-
+import { selectIsLoggedIn, setLoginRequestStatus } from '../../store/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../store/store'
+import axios from 'axios'
+import { BASEURL } from '../../const/baseUrl'
+import { CommentRequest } from '../../model'
 const CommentBody = (videoItems: VideoItem) => {
+    const baseUrl = BASEURL;
+    const isLoggedIn=useSelector((state:RootState)=>selectIsLoggedIn(state));
+    const dispatch = useDispatch();
     const [comment, setComment] = useState<string>('')
     const [inputFocused, setInputFocused] = useState<boolean>(false)
     const [isUploading, setIsUploading] = useState<boolean>(false)
-
+    const token = localStorage.getItem('token');
     const addComment = () => {
+        const newComment:CommentRequest={text:comment,userId=}
+        const _axios = axios.create({
+            baseURL: baseUrl,
+            headers: {
+                'Authorization': `Bearer ${token}`, // Add the Bearer token to the request header
+                'Content-Type': 'application/json', // Set the content type if needed
+            },
+        });
         //Them comment
     }
     const commentsByPost = [
@@ -26,72 +42,6 @@ const CommentBody = (videoItems: VideoItem) => {
                 avatar: 'string'
             }
         },
-        {
-            id: '123',
-            post_id: '123',
-            text: 'This is beatiful post',
-            user: {
-                userID: '123',
-                userName: 'TrieuDeptrai',
-                displayedName: 'Ngu ma li',
-                Email: 'phannhattrieu012@gmail.com',
-                Bio: '123',
-                avatar: 'string'
-            }
-        },
-
-        {
-            id: '123',
-            post_id: '123',
-            text: 'This is beatiful post',
-            user: {
-                userID: '123',
-                userName: 'TrieuDeptrai',
-                displayedName: 'Ngu ma li',
-                Email: 'phannhattrieu012@gmail.com',
-                Bio: '123',
-                avatar: 'string'
-            }
-        },
-        {
-            id: '123',
-            post_id: '123',
-            text: 'This is beatiful post',
-            user: {
-                userID: '123',
-                userName: 'TrieuDeptrai',
-                displayedName: 'Ngu ma li',
-                Email: 'phannhattrieu012@gmail.com',
-                Bio: '123',
-                avatar: 'string'
-            }
-        }, {
-            id: '123',
-            post_id: '123',
-            text: 'This is beatiful post',
-            user: {
-                userID: '123',
-                userName: 'TrieuDeptrai',
-                displayedName: 'Ngu ma li',
-                Email: 'phannhattrieu012@gmail.com',
-                Bio: '123',
-                avatar: 'string'
-            }
-        },
-        {
-            id: '123',
-            post_id: '123',
-            text: 'This is beatiful post',
-            user: {
-                userID: '123',
-                userName: 'TrieuDeptrai',
-                displayedName: 'Ngu ma li',
-                Email: 'phannhattrieu012@gmail.com',
-                Bio: '123',
-                avatar: 'string'
-            }
-        },
-
     ]
 
     return (
@@ -107,14 +57,16 @@ const CommentBody = (videoItems: VideoItem) => {
                     <div>
                         {
                             commentsByPost.map((comment, index) => (
-                                <SingleComment key={index} text={comment.text} user={comment.user} />
+                                <SingleComment key={index} text={comment.text}
+                                // user={comment.user}
+                                />
                             ))
                         }
                     </div>
                 )}
                 <div className="mb-28" />
             </div>
-            <div
+            {isLoggedIn ? (<div
                 id="CreateComment"
                 className="absolute flex items-center justify-between bottom-0 bg-white h-[85px] lg:max-w-[550px] w-full py-5 px-8 border-t-2"
             >
@@ -149,8 +101,13 @@ const CommentBody = (videoItems: VideoItem) => {
                     <BiLoaderCircle className="animate-spin" color="#E91E62" size="20" />
                 )}
 
-            </div>
-
+            </div>) :
+                (<button
+                onClick={()=>{ dispatch(setLoginRequestStatus(true));}}
+                className='absolute text-[16px] bg-gray-100 flex items-center justify-between bottom-0  w-full py-5 px-8 text-left text-[#F02C56]'>
+                    Log in to comment
+                </button>
+                )}
         </>
     )
 }

@@ -8,9 +8,7 @@ const ProfilePage = () => {
 
   const user: User = {
     avatar: 'http://placehold.co/200',
-    Bio: 'Dep trai',
     displayedName: 'Phan Nhat Trieu',
-    userID: '12',
     userName: 'trieu3706_',
   }
 
@@ -69,7 +67,7 @@ const ProfilePage = () => {
           </div>
         </div>
         <p className="text-left pt-4 mr-4 text-gray-500 font-light text-[15px] pl-1.5 max-w-[500px]">
-          {(user.Bio) ? (user.Bio) : ('No bio yet.')}
+          {/* {(user.Bio) ? (user.Bio) : ('No bio yet.')} */}
         </p>
 
         <ul className="w-full flex items-center pt-4 border-b">
@@ -79,25 +77,21 @@ const ProfilePage = () => {
         <div className="mt-4 grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3">
 
           <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-            videoId='121'
           />
           <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-            videoId='122'
           />
           <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-            videoId='123'
           />
           <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep 1212312 123123 123123213123  qua'
-            videoId='124'
           />
           <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-            videoId='125'
+   
           />
           <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-            videoId='126'
+  
           />
           <PostUser comments={12} likes={12} videoURL='../../utils/beach.mp4' shares={12} caption='Dep qua'
-            videoId='127'
+        
           />
 
         </div>

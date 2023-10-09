@@ -14,7 +14,6 @@ const PostPage = () => {
     profile: {
 
     },
-    videoId: '12',
     videoURL: '../../utils/beach.mp4'
   }
 

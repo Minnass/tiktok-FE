@@ -1,13 +1,15 @@
+import { HasTag } from "../model/hasTag";
 import { User } from "./user";
 
 export interface VideoItem{
-            videoId?:string
+            videoId?:number
             caption?:string,
             videoURL?:string,
             likes?:number,
             shares?:number,
             comments?:number,
             uploadDate?:Date,
+            hasTag?:HasTag[],
             profile?:User
 }
 export interface LikedVideo{

@@ -21,25 +21,37 @@ const PostMain = (post: VideoItem) => {
         <>
             <div id={`PostMain-${post.videoId}`} className='flex border-b py-5 min-w-[400px]'>
                 <div className='cursor-pointer '>
-                    <Link to={`/profile/${post.profile?.userID}`}>
-                        <img className='rounded-full max-h-[60px]' width="60" src={post?.profile?.avatar} />
+                    <Link to={`/${post.profile?.userName}`}>
+                        <img className='rounded-full max-h-[60px]' width="60" src={(post?.profile?.avatar == null) ?
+                            (require('../../../utils/user.png')) : (post?.profile?.avatar)} />
                     </Link>
                 </div>
                 <div className='pl-3 w-full px-4 text-left'>
                     <div className='flex items-center justify-between pb-0.5'>
-                        <Link to={`/profile/${post.profile?.userID}`}>
-                            <span className='font-bold hover:underline cursor-pointer'>
-                                {post.profile?.displayedName}
-                            </span>
+                        <Link to={`${post.profile?.userName}`}>
+                            <div className='flex items-end'>
+                                <span className='font-bold hover:underline cursor-pointer'>
+                                    {post.profile?.userName}
+                                </span>
+                                <span className='ml-1 text-[14px] cursor-pointer py-1'>
+                                    {post.profile?.displayedName}
+                                </span>
+                            </div>
                         </Link>
-                        {location.pathname == '/' &&
+                        {location.pathname === '/' &&
                             <button className='border text-[15px] px-[21px] py-0.5 border-[#F02C56] text-[#F02C56] hover:bg-[#ffeef2] font-semibold rounded-md'>
                                 Follow
                             </button>
                         }
                     </div>
                     <p className='text-[15px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]'>{post.caption}</p>
-                    <p className='text-[14px] text-gray-500 pb-0.5'>#fun #cool #02221221112 #supperAwesome </p>
+                    <div className='flex w-full  text-[14px] text-gray-500 pb-0.5 items-center'>
+                        {
+                            post.hasTag?.map((video) => (
+                                <p className='mr-2' key={video.hasTagId}>{`#${video.hasTagName}`}</p>
+                            ))
+                        }
+                    </div>
                     <p className='text-[14px] pb-0.5 flex items-center font-semibold'>
                         <ImMusic size='17' />
                         <span className='px-1'>Original sound- AWESOME</span>
@@ -47,19 +59,16 @@ const PostMain = (post: VideoItem) => {
                     </p>
                     <div className='mt-2.5 flex'>
                         <div className='relative min-h-[480px] max-h-[580px]   max-w-[260px] flex items-center    cursor-pointer'>
-                            <video
+                          <Link to={`/${post.profile?.userName}/${post.videoId}`}>
+                          <video
                                 id={`video-${post.videoId}`}
                                 controls
                                 muted
                                 className=' object-cover mx-auto rounded-lg h-full'
                                 src={require('../../../utils/beach.mp4')} />
-                            <img
-                                className='absolute right-2 bottom-10'
-                                width='90'
-                                src={require('../../../utils/tiktok-logo-white.png')}
-                            />
+                          </Link>
                         </div>
-                        <PostMainLike videoId={post.videoId} likes={post.likes} comments={post.comments} />
+                        <PostMainLike profile={post.profile} videoId={post.videoId} likes={post.likes} comments={post.comments} />
                     </div>
 
                 </div>

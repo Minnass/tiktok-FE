@@ -2,11 +2,15 @@ import React, { useState } from 'react'
 import { ErrorObject, RegisterProps } from '../../types';
 import { BiLoaderCircle } from 'react-icons/bi';
 import TextInput from '../textInput/textInput';
-
+import { AxiosInstance } from 'axios';
+import axiosInstance from '../../aixos/axios';
+import { RegisterRequest } from '../../model';
+import { setLoading } from '../../store/loading';
 const Register = (props: RegisterProps) => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoadingg] = useState<boolean>(false);
   const [name, setName] = useState<string | ''>('');
   const [email, setEmail] = useState<string | ''>('');
+  const [displayedName, setDisplayedName] = useState<string | ''>('');
   const [password, setPassword] = useState<string | ''>('');
   const [confirmPassword, setConfirmPassword] = useState<string | ''>('');
   const [error, setError] = useState<ErrorObject | null>(null)
@@ -45,10 +49,26 @@ const Register = (props: RegisterProps) => {
     return isError
   }
   const register = () => {
-    console.log('register')
-    validate();
+    if (!validate()) {
+      const registerQuest: RegisterRequest = {
+        email: email,
+        displayedName: displayedName,
+        password: password,
+        userName: name
+      }
+      axiosInstance.post('/Account/SignUp', registerQuest)
+        .then((response) => {
+          if (response.status === 200) {
+            console.log(response);
+            setLoading(false)
+            props.successfulRegisterListener();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
     //Dnag nhap thanh cong
-    props.successfulRegisterListener();
   }
   return (
     <>
@@ -67,6 +87,7 @@ const Register = (props: RegisterProps) => {
 
         </div>
 
+
         <div className="px-4 mt-2 py-1 text-[14px]">
 
           <TextInput
@@ -75,6 +96,18 @@ const Register = (props: RegisterProps) => {
             onUpdate={setEmail}
             inputType="email"
             error={showError('email')}
+          />
+
+        </div>
+
+        <div className="px-4 mt-2 py-1 text-[14px]">
+
+          <TextInput
+            string={displayedName}
+            placeHolder="Displayed Name"
+            onUpdate={setDisplayedName}
+            inputType="text"
+            error={showError('displayedName')}
           />
 
         </div>

@@ -17,7 +17,6 @@ const CommentHeader = (item: VideoItem) => {
         profile: {
 
         },
-        videoId: '12',
         videoURL: '../../utils/beach.mp4'
     }
     const likeClickHandler = () => {
@@ -55,8 +54,8 @@ const CommentHeader = (item: VideoItem) => {
                                 </p>
                             </div>
                         </div>
-                        <button className=' right-2 top-2 absolute border text-[15px] px-[21px]  bg-[#5623ff] text-white hover:bg-[#5e50e1] font-semibold rounded-sm  py-1 px-2 '>
-                            Follow
+                        <button className=' right-2 top-2 absolute border text-[15px] px-[21px]  bg-[#F02C56] text-white hover:bg-[#d25b43] font-semibold rounded-sm  py-1 px-2 '>
+                           {true? `Follow`:`Following`}
                         </button>
                     </div>
                     <p className='my-3'> Nước sào nấu  #food #delicous</p>

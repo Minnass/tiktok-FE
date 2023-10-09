@@ -1,11 +1,21 @@
 import React, { useState } from 'react'
-import { ErrorObject } from '../../types';
+import { ErrorObject, LoginProp } from '../../types';
 import TextInput from '../textInput/textInput';
 import { BiLoaderCircle } from 'react-icons/bi';
-
-const Login = () => {
+import { useDispatch, useSelector } from 'react-redux'
+import { setLoggedIn } from '../../store/auth';
+import { useNavigate } from 'react-router-dom';
+import { selectNextRouter, setNextRouter } from "../../store/nextRouter";
+import { RootState } from "../../store/store";
+import { LoginRequest } from '../../model';
+import axiosInstance from '../../aixos/axios';
+const Login = (props: LoginProp) => {
+  //redux section
+  const dispatch = useDispatch();
+  const navigater = useNavigate();
+  const nextRouter = useSelector((state: RootState) => selectNextRouter(state));
   const [loading, setLoading] = useState<boolean>(false);
-  const [email, setEmail] = useState<string | ''>('');
+  const [userName, setUserName] = useState<string | ''>('');
   const [password, setPassword] = useState<string | ''>('');
   const [error, setError] = useState<ErrorObject | null>(null)
   const showError = (type: string) => {
@@ -16,15 +26,9 @@ const Login = () => {
   }
   const validate = () => {
     setError(null)
-
-    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     let isError = false
-    if (!email) {
-      setError({ type: 'email', message: 'An Email is required' })
-      isError = true
-    }
-    else if (!reg.test(email)) {
-      setError({ type: 'email', message: 'The Email is not valid' })
+    if (!userName) {
+      setError({ type: 'userName', message: 'An UserName is required' })
       isError = true
     }
     else if (!password) {
@@ -35,11 +39,28 @@ const Login = () => {
   }
   const login = () => {
     setLoading(true)
-    validate();
-    //send request 
-    console.log('login')
-    setLoading(false)
+    if (!validate()) {
+      const loginRequest:LoginRequest={
+        password:password,
+        userName:userName
+      }
+      axiosInstance.post('/Account/login',loginRequest)
+      .then((response)=>{
+        props.successfulLoginListener();
+        if (nextRouter !== '') {
+          navigater(nextRouter);
+        }
+        dispatch(setLoggedIn(response.data.data));
+        setLoading(false)
+      })
+      .catch(error=>{
+        setLoading(false)
+      });
+    }
+   
+    
   }
+  
   return (
     <>
       <div>
@@ -47,11 +68,11 @@ const Login = () => {
 
         <div className="px-4 py-1 text-[14px]" >
           <TextInput
-            string={email}
-            placeHolder="Email address"
-            onUpdate={setEmail}
-            inputType="email"
-            error={showError('email')}
+            string={userName}
+            placeHolder="UserName"
+            onUpdate={setUserName}
+            inputType="text"
+            error={showError('userName')}
           />
         </div>
 
@@ -70,7 +91,7 @@ const Login = () => {
             onClick={() => login()}
             className={`
                             flex items-center justify-center w-full text-[17px] font-semibold text-white py-3 rounded-sm
-                            ${(!email || !password) ? 'bg-gray-200' : 'bg-[#F02C56]'}
+                            ${(!userName || !password) ? 'bg-gray-200' : 'bg-[#F02C56]'}
                         `}
           >
             {loading ? <BiLoaderCircle className="animate-spin" color="#ffffff" size={25} /> : 'Log in'}

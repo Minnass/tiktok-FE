@@ -1,9 +1,6 @@
 export interface User{
-    userID?:string,
+    userID?:number,
     userName?:string,
     displayedName?:string
-    Email?:string,
-    dateOfBirth?:Date,
-    Bio?:string,
     avatar?:string
 }

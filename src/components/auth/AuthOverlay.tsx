@@ -3,17 +3,18 @@ import Login from './login'
 import Register from './register'
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
-import { setLoginRequestStatus } from "../../store/auth";
+import { useDispatch, useSelector } from "react-redux";
+import {  setLoginRequestStatus } from "../../store/auth";
 export default function AuthOverlay() {
     //redux section
+    
     const dispatch = useDispatch();
     let [isRegister, setIsRegister] = useState<boolean>(false)
-
+ 
     const handleSucessfulRegister = () => {
         setIsRegister(false)
     }
-    const closeLogin=()=>{
+    const closeLogin = () => {
         dispatch(setLoginRequestStatus(false))
     }
     return (
@@ -33,7 +34,7 @@ export default function AuthOverlay() {
                         </button>
                     </div>
 
-                    {isRegister ? <Register successfulRegisterListener={handleSucessfulRegister} /> : <Login />}
+                    {isRegister ? <Register successfulRegisterListener={handleSucessfulRegister} /> : <Login successfulLoginListener={closeLogin} />}
 
                     <div className="flex items-center justify-center py-5 left-0 bottom-0 border-t w-full">
                         <span className="text-[14px] text-gray-600">Don’t have an account?</span>

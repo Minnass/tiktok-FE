@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { LoginResult, UserInfomation } from '../model/loginResult';
 
 interface LoginState {
     isLoggedIn: boolean;
     isLoginRequest: boolean
+
 }
 const initialState: LoginState = {
     isLoggedIn: false,
@@ -13,14 +15,19 @@ const loginSlice = createSlice({
     name: 'login',
     initialState,
     reducers: {
-        setLoggedIn: (state) => {
+        setLoggedIn: (state,action:PayloadAction<LoginResult>) => {
             state.isLoggedIn = true;
+            localStorage.setItem('token', action.payload.jwtResult.accessToken);
+            localStorage.setItem('refreshToken',action.payload.jwtResult.refreshToken.tokenString);
+            localStorage.setItem('userInfo',JSON.stringify(action.payload.userInfomation))
         },
         setLoggedOut: (state) => {
             state.isLoggedIn = false;
+            localStorage.clear();
         },
         setLoginRequestStatus: (state,action:PayloadAction<boolean>) => {
             state.isLoginRequest = action.payload;
+            
         },
     },
 });

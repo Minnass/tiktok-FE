@@ -5,7 +5,7 @@ import { AiOutlineCheck } from 'react-icons/ai'
 const FollowingUser = (user: User) => {
     return (
         <>
-            <Link to={`/profile/${user.userID}`}
+            <Link to={`/2`}
                 className='flex items-center hover:bg-gray-100 rounded-md w-full py-1.5 px-2'
             >
                 <img className='rounded-full lg:mx-0 mx-auto h-[35px] w-[35px] object-cover' src={user.avatar} />

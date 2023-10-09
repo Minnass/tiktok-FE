@@ -8,11 +8,13 @@ import PopUp from '../../components/popup/popup';
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import axiosInstance from '../../aixos/axios';
 
 const UploadPage = () => {
   let [hasPopUp, setHasPopUp] = useState<boolean>(false);
   let [fileDisplay, setFileDisplay] = useState<string>('');
   let [caption, setCaption] = useState<string>('');
+  let [hasTag, setHasTag] = useState<string>('');
   let [file, setFile] = useState<File | null>(null);
   let [error, setError] = useState<UploadError | null>(null);
   let [isUploading, setIsUploading] = useState<boolean>(false);
@@ -25,28 +27,38 @@ const UploadPage = () => {
       const fileUrl = URL.createObjectURL(file);
       setFileDisplay(fileUrl);
       setFile(file);
-      const videoElement = document.createElement('video');
-      videoElement.src = fileUrl;
-      videoElement.addEventListener('loadedmetadata', () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = videoElement.videoWidth;
-        canvas.height = videoElement.videoHeight;
-        videoElement.currentTime = 1000;
-        const ctx = canvas.getContext('2d');
-        ctx!.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-        const dataURL = canvas.toDataURL('image/jpeg'); // Change format as needed
-        console.log(dataURL);
-        // Set the background image data in state
-
-      });
     }
   }
   const clearVideo = () => {
     setFileDisplay('');
+    setCaption('');
+    setHasTag('');
     setFile(null);
   }
-  const createNewPost = () => {
+  const createNewPost = async () => {
     //Push video len
+    try {
+      const formData = new FormData();
+      formData.append('videoFile', file!)
+      formData.append('hashTag',hasTag);
+      formData.append('caption', caption);
+      const response = await axiosInstance.post('/Post/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if(response.status===200){
+        toast.success("Video was uploaded successfully", {
+          autoClose: 1000,
+          theme: 'colored'
+        })
+      }
+      clearVideo();
+    }
+    catch (error) {
+      console.log(error);
+      clearVideo();
+    }
   }
 
   const discardHandler = () => {
@@ -198,6 +210,28 @@ const UploadPage = () => {
                 onChange={event => setCaption(event.target.value)}
               />
             </div>
+            <div className="mt-5">
+              <div className="flex items-center justify-between">
+                <div className="mb-1 text-[15px]">HasTag
+                  <span className=' text-[12px] text-gray-500 font-light'>(Separate each by space)</span>
+                </div>
+                <div className="text-gray-400 text-[12px]">{hasTag.length}/150</div>
+              </div>
+
+              <input
+                maxLength={150}
+                type="text"
+                className="
+                                          w-full
+                                          border
+                                          p-2.5
+                                          rounded-md
+                                      focus:outline-none
+                                      "
+                value={hasTag}
+                onChange={event => setHasTag(event.target.value)}
+              />
+            </div>
 
             <div className="flex gap-3">
               <button
@@ -219,7 +253,7 @@ const UploadPage = () => {
             </div>
 
             {error ? (
-              <div className="text-[#5623ff] mt-4  hover:bg-sky-800">
+              <div className="text-[#ff2323] mt-4 text-[14px]">
                 {error.message}
               </div>
             ) : null}

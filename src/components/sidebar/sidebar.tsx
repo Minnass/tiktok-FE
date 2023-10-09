@@ -22,7 +22,7 @@ const Sidebar = () => {
           <div className='border-b  lg:ml-2  mt-2' />
           <h3 className='lg:block hidden text-xs text-left text-gray-600 font-semibold pt-4 pb-2'>Suggested accounts</h3>
           <div className='lg:hidden block pt-3' />
-          <FollowingUser avatar='https://placehold.co/35' displayedName='Triesddasd 22222222222222 22yyyyyyuu' userName='trieu12_' userID='Trieu'  />
+          <FollowingUser avatar='https://placehold.co/35' displayedName='Triesddasd 22222222222222 22yyyyyyuu' userName='trieu12_'   />
           <button className='lg:block hidden text-[#F0C56] pt-1.5 pl-2 text-[13px]'>
             See all
           </button>
@@ -31,7 +31,7 @@ const Sidebar = () => {
               <div className='border-b  lg:ml-2  mt-2' />
               <h3 className='lg:block hidden text-xs text-left text-gray-600 font-semibold pt-4 pb-2'>Following accounts</h3>
               <div className='lg:hidden block pt-3' />
-              <FollowingUser avatar='https://placehold.co/35' displayedName='Triesddasd 22222222222222 22yyyyyyuu' userName='trieu12_' userID='12'  />
+              <FollowingUser avatar='https://placehold.co/35' displayedName='Triesddasd 22222222222222 22yyyyyyuu' userName='trieu12_'  />
               <button className='lg:block hidden text-[#F0C56] pt-1.5 pl-2 text-[13px]'>
                 See more
               </button>
@@ -39,10 +39,10 @@ const Sidebar = () => {
           ) : null}
           <div className="lg:block hidden border-b lg:ml-2 mt-2" />
           <div className="lg:block hidden text-[11px] text-gray-500 text-left">
-            <p className="pt-4 px-2">About Newsroom TikTok Shop Contact Careers ByteDance</p>
-            <p className="pt-4 px-2">TikTok for Good Advertise Developers Transparency TikTok Rewards TikTok Browse TikTok Embeds</p>
+            <p className="pt-4 px-2">About Newsroom TikTer Shop Contact Careers ByteDance</p>
+            <p className="pt-4 px-2">TikTer for Good Advertise Developers Transparency TikTer Rewards TikTer Browse TikTer Embeds</p>
             <p className="pt-4 px-2">Help Safety Terms Privacy Creator Portal Community Guidelines</p>
-            <p className="pt-4 px-2">© 2023 TikTok</p>
+            <p className="pt-4 px-2">© 2023 TikTer</p>
           </div>
         
           <div className="pb-14"></div>

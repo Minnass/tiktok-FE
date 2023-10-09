@@ -1,58 +1,43 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { DefaultLayout, PostMain } from '../../components'
-import FollowingUser from '../../components/sidebar/followingItem/followingItem'
+import axiosInstance from '../../aixos/axios'
+import { useState } from 'react'
+import { VideoModel } from '../../model'
 export const HomePage = () => {
+  const [searh, setSearch] = useState<string | null>(null)
+  const [videoList, setVideoList] = useState<VideoModel[]>([])
+  useEffect(() => {
+    axiosInstance.get(`Post/${searh}`)
+      .then((response) => {
+        if (response.status === 200) {
+          setVideoList(response.data.data)
+        }
+      }).catch((error) => {
+        console.error('Error fetching data:', error);
+      })
+  }, [])
   return (
     <DefaultLayout>
       <div className='w-[calc(100%-90px)] max-w-[690px] ml-auto '  >
-        <PostMain
-          videoId='12312'
-          caption='Những con cá lớn '
-          videoURL='../../utils/beach.mp4'
-          likes ={12}
-          comments={12}
-          shares={12}
-          profile={
-            {
-              
-              avatar:'https://placehold.co/35',
-              displayedName:'TRIeu Dep trai',
-              userName:'trieu3706'
+        {videoList.map((video, index) => (
+          <PostMain key={index}
+            videoId={video.videoId}
+            caption={video.caption}
+            videoURL={video.videoUrl}
+            likes={video.like}
+            comments={video.comment}
+            shares={0}
+            hasTag={video.hasTag}
+            profile={
+              {
+                avatar: video.user.avatar,
+                displayedName: video.user.displayedName,
+                userName: video.user.userName,
+                userID: video.user.userId,
+              }
             }
-          }
-        />
-          <PostMain
-          videoId='12312'
-          caption='Những con cá lớn '
-          videoURL='../../utils/beach.mp4'
-          likes ={12}
-          comments={12}
-          shares={12}
-          profile={
-            {
-              
-              avatar:'https://placehold.co/35',
-              displayedName:'TRIeu Dep trai',
-              userName:'trieu3706'
-            }
-          }
-        />
-          <PostMain
-          videoId='12312'
-          caption='Những con cá lớn '
-          videoURL='../../utils/beach.mp4'
-          likes ={12}
-          comments={12}
-          shares={12}
-          profile={
-            {
-              
-              avatar:'https://placehold.co/35',
-              displayedName:'TRIeu Dep trai',
-              userName:'trieu3706'
-            }
-          }
-        />
+          />
+        ))}
       </div>
     </DefaultLayout>
   )

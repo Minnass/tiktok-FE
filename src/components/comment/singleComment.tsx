@@ -17,11 +17,11 @@ const SingleComment = ({ created_at, text, user }: SingleCommentProps) => {
 
       <div id="SingleComment" className="flex items-center justify-between px-8 mt-4">
         <div className="flex items-center relative w-full">
-          <Link to={`/profile/${user?.userName}`}>
+          <Link to={`/${user?.userName}`}>
             <img
               className="absolute top-0 rounded-full lg:mx-0 mx-auto"
               width="40"
-              src={require('../../utils/image.jpg')}
+              src={require('../../utils/user.png')}
               alt=''
             />
           </Link>
@@ -39,7 +39,7 @@ const SingleComment = ({ created_at, text, user }: SingleCommentProps) => {
                 >
                   {isDeleting
                     ? <BiLoaderCircle className="animate-spin" color="#E91E62" size="20" />
-                    : <BsTrash3 className="cursor-pointer" size="25" />
+                    : <BsTrash3 className="cursor-pointer" size="15" />
                   }
                 </button>
               ) : (null)}

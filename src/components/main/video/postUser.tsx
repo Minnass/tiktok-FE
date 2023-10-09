@@ -29,7 +29,7 @@ const PostUser = (post: VideoItem) => {
                         <AiOutlineLoading3Quarters className="animate-spin ml-1" size="80" color="#FFFFFF" />
                     </div>
                 ) : (
-                    <Link to={`/${post.profile?.userID}/video/${post.videoId}`}>
+                    <Link to={`/${1}/${2}`}>
                         <video
                             id={`video${post.videoId}`}
                             muted

@@ -5,7 +5,6 @@ const FollowingPage = () => {
     <DefaultLayout>
       <div className='w-[calc(100%-90px)] max-w-[690px] ml-auto '  >
       <PostMain
-          videoId='12312'
           caption='Những con cá lớn '
           videoURL='../../utils/beach.mp4'
           likes ={12}
@@ -21,7 +20,6 @@ const FollowingPage = () => {
           }
         />
           <PostMain
-          videoId='12312'
           caption='Những con cá lớn '
           videoURL='../../utils/beach.mp4'
           likes ={12}
@@ -37,7 +35,6 @@ const FollowingPage = () => {
           }
         />
           <PostMain
-          videoId='12312'
           caption='Những con cá lớn '
           videoURL='../../utils/beach.mp4'
           likes ={12}

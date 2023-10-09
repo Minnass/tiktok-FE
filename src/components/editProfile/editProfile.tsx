@@ -6,7 +6,6 @@ import { CropperDimensions, ErrorObject, ProfileEditorProps, TextInputCompType }
 import { AiOutlineClose } from 'react-icons/ai';
 import { BsPencil } from 'react-icons/bs';
 import TextInput from '../textInput/textInput';
-import { eventManager } from 'react-toastify/dist/core';
 import { BiLoaderCircle } from 'react-icons/bi'
 import { motion } from 'framer-motion'
 
