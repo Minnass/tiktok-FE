@@ -6,9 +6,9 @@ import { CommentBody, CommentHeader } from '../../components'
 import { useParams } from 'react-router-dom'
 import { VideoModel } from '../../model'
 import axiosInstance from '../../aixos/axios'
-import { error } from 'console'
 
 const PostPage = () => {
+  const [hasPopUp, setHasPopUp] = useState<boolean>(false);
   const { postID } = useParams();
   const [post, setPost] = useState<VideoModel | null>(null);
   useEffect(() => {

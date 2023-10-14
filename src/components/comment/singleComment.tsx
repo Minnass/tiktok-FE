@@ -4,30 +4,60 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { BiLoaderCircle } from 'react-icons/bi'
 import { BsTrash3 } from 'react-icons/bs'
-const SingleComment = ({ created_at, text, user }: SingleCommentProps) => {
+import getDateString from '../../utils/convertDateToString'
+import { getUserInfo } from '../../service/userService'
+import axiosInstance from '../../aixos/axios'
+import { motion } from 'framer-motion'
+const SingleComment = ({ created_at, text, user, id, deleteHandler }: SingleCommentProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
-  const deleteThisComment = () => {
-    setIsDeleting(true);
-  }
+  const [hasPopUp, setHasPopUp] = useState<boolean>(false)
+  const userInfo = getUserInfo();
   const date = new Date(created_at!);
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Add 1 because months are 0-based
-  const day = date.getDate().toString().padStart(2, '0');
-  const year = date.getFullYear().toString();
-  const hours = date.getHours().toString().padStart(2, '0'); // Get hours
-
-  const currentDate = new Date();
-  const timeDifference = +currentDate - +date; // Calculate the time difference in milliseconds
-  const oneDayInMilliseconds = 24 * 60 * 60 * 1000; // One day in milliseconds
-  var value: string = "";
-  if (timeDifference > oneDayInMilliseconds) {
-    value = `${month}-${day}-${year}`;
-  } else {
-    const hoursDifference = Math.floor(timeDifference / (60 * 60 * 1000)); // Convert to hours
-    value = `${hoursDifference} hour${hoursDifference > 1 ? 's' : ''} ago`;
+  var value = getDateString(date);
+  const showPopup = () => {
+    setHasPopUp(true);
+  }
+  const deleteComment = () => {
+    setIsDeleting(true);
+    axiosInstance.delete(`/Comment/${id}`)
+      .then((response) => {
+        deleteHandler();
+        setIsDeleting(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsDeleting(false);
+      });
   }
   return (
-    <>
+    <>  
+      {hasPopUp &&
+        <motion.div
+          initial={
+            {
+              scale: 0
+            }
+          }
+          animate={{
+            scale: 1
+          }}
+          className="fixed flex items-center justify-center z-10 top-0 left-0 w-full h-full bg-black bg-opacity-50">
+          <div className='relative text-center bg-white w-full max-w-[350px] p-4 z-50 rounded-lg'>
+            <p className='font-bold'>Warning</p>
+            <p className='text-gray-500 text-[15px] font-thin mb-6'>Do you want to delete this comment?</p>
+            <button className='bg-[#ff2e2e] w-full border text-[20px] rounded-sm py-2 font-bold text-white hover:bg-red-600'
+              onClick={() => deleteComment()}
+            >
+              Delete
+            </button>
+            <button className='text-[16px] hover:bg-gray-100 rounded-sm  py-2 border w-full mt-3 '
+              onClick={() => setHasPopUp(false)}
+            >
+              Discard
+            </button>
+          </div>
 
+        </motion.div>}
       <div id="SingleComment" className="flex items-center justify-between px-8 mt-4">
         <div className="flex items-center relative w-full">
           <Link to={`/${user?.userName}`}>
@@ -45,15 +75,17 @@ const SingleComment = ({ created_at, text, user }: SingleCommentProps) => {
                   {value}
                 </span>
               </span>
-              {true ? (
+              {userInfo?.userId === user?.userId ? (
                 <button
                   disabled={isDeleting}
-                  onClick={() => deleteThisComment()}
+                  onClick={() => showPopup()}
                 >
-                  {isDeleting
-                    ? <BiLoaderCircle className="animate-spin" color="#E91E62" size="20" />
-                    : <BsTrash3 className="cursor-pointer" size="15" />
-                  }
+                  {
+                    isDeleting ? (
+                      <BiLoaderCircle className="animate-spin" color="#E91E62" size="20" />
+                    ) : (
+                      <BsTrash3 className="cursor-pointer" size="15" />
+                    )}
                 </button>
               ) : (null)}
             </div>

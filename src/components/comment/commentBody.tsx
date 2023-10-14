@@ -24,18 +24,22 @@ const CommentBody = (videoItems: VideoItem) => {
     const [commentsByPost, setCommentsByPost] = useState<CommentResult[]>([])
     const token = localStorage.getItem('token');
     useEffect(() => {
-      if(videoItems.videoId!=null){
-        axiosInstance.get(`Comment/${videoItems.videoId}`)
-        .then((response) => {
-            setCommentsByPost(response.data.data);
-        })
-        .catch((error) => {
-            console.log(videoItems.videoId);
-            console.log(error);
-        });
-      }
-    }, [isLoggedIn,videoItems.videoId]);
+        fetchDate();
+    }, [isLoggedIn, videoItems.videoId]);
+    const fetchDate = () => {
+        if (videoItems.videoId != null) {
+            axiosInstance.get(`Comment/${videoItems.videoId}`)
+                .then((response) => {
+                    setCommentsByPost(response.data.data);
+                })
+                .catch((error) => {
+                    console.log(videoItems.videoId);
+                    console.log(error);
+                });
+        }
+    }
     const addComment = () => {
+        setComment('');
         const newComment: CommentRequest = { text: comment, userId: userInfo?.userId, videoId: videoItems.videoId }
         const _axios = axios.create({
             baseURL: baseUrl,
@@ -46,12 +50,15 @@ const CommentBody = (videoItems: VideoItem) => {
         });
         _axios.post(`${baseUrl}Comment`, newComment)
             .then((response) => {
-                console.log('comment successfully');
+                fetchDate();
             })
             .catch((error) => {
                 console.log('Comment that bai');
             })
         //Them comment
+    }
+    const commentDeleteHandler = () => {
+        fetchDate();
     }
 
     return (
@@ -68,7 +75,9 @@ const CommentBody = (videoItems: VideoItem) => {
                         {
                             commentsByPost.map((comment, index) => (
                                 <SingleComment key={index} text={comment.text} created_at={comment.time}
-                                user={comment.user}
+                                    user={comment.user}
+                                    id={comment.commentId}
+                                    deleteHandler={commentDeleteHandler}
                                 />
                             ))
                         }
@@ -78,7 +87,7 @@ const CommentBody = (videoItems: VideoItem) => {
             </div>
             {isLoggedIn ? (<div
                 id="CreateComment"
-                className="absolute flex items-center justify-between bottom-0 bg-white h-[85px] lg:max-w-[550px] w-full py-5 px-8 border-t-2"
+                className="absolute flex z-0 items-center justify-between bottom-0 bg-white h-[85px] lg:max-w-[550px] w-full py-5 px-8 border-t-2"
             >
                 <div
                     className={`

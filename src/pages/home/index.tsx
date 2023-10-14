@@ -4,7 +4,7 @@ import axiosInstance from '../../aixos/axios'
 import { useState } from 'react'
 import { VideoModel } from '../../model'
 import { getUserInfo } from '../../service/userService'
-import { selectIsLoggedIn, setLoggedIn } from '../../store/auth'
+import { selectIsLoggedIn,  } from '../../store/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { setLikedVideos } from '../../store/likedVideos'
@@ -14,22 +14,8 @@ export const HomePage = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
   const userInfo = getUserInfo();
-  if (userInfo != null) {
-    dispatch(setLoggedIn());
-  }
-  useEffect(() => {
-    if (isLoggedIn) {
-      axiosInstance.get(`Like/getLikedVideo/${userInfo?.userId}`)
-        .then(
-          (response) => {
-            dispatch(setLikedVideos(response.data.data))
-          }
-        )
-        .catch((error) => {
-          console.log('Get all liked videos faced error');
-        })
-    }
 
+  useEffect(() => {
     axiosInstance.get(`Post/getAll/${searh}`)
       .then((response) => {
         if (response.status === 200) {
