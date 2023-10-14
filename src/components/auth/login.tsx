@@ -3,7 +3,7 @@ import { ErrorObject, LoginProp } from '../../types';
 import TextInput from '../textInput/textInput';
 import { BiLoaderCircle } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux'
-import { setLoggedIn } from '../../store/auth';
+import { setLoggedIn, setUserInfo } from '../../store/auth';
 import { useNavigate } from 'react-router-dom';
 import { selectNextRouter, setNextRouter } from "../../store/nextRouter";
 import { RootState } from "../../store/store";
@@ -50,7 +50,8 @@ const Login = (props: LoginProp) => {
         if (nextRouter !== '') {
           navigater(nextRouter);
         }
-        dispatch(setLoggedIn(response.data.data));
+        dispatch(setLoggedIn());
+        dispatch(setUserInfo(response.data.data))
         setLoading(false)
       })
       .catch(error=>{

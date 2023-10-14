@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { VideoItem } from '../../types'
 import SingleComment from './singleComment'
 import { useState } from 'react'
@@ -8,17 +8,35 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import axios from 'axios'
 import { BASEURL } from '../../const/baseUrl'
-import { CommentRequest } from '../../model'
+import { CommentRequest, CommentResult } from '../../model'
+import { getUserInfo } from '../../service/userService'
+import axiosInstance from '../../aixos/axios'
+import { error } from 'console'
 const CommentBody = (videoItems: VideoItem) => {
     const baseUrl = BASEURL;
-    const isLoggedIn=useSelector((state:RootState)=>selectIsLoggedIn(state));
+    const userInfo = getUserInfo();
+    const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
     const dispatch = useDispatch();
     const [comment, setComment] = useState<string>('')
+
     const [inputFocused, setInputFocused] = useState<boolean>(false)
     const [isUploading, setIsUploading] = useState<boolean>(false)
+    const [commentsByPost, setCommentsByPost] = useState<CommentResult[]>([])
     const token = localStorage.getItem('token');
+    useEffect(() => {
+      if(videoItems.videoId!=null){
+        axiosInstance.get(`Comment/${videoItems.videoId}`)
+        .then((response) => {
+            setCommentsByPost(response.data.data);
+        })
+        .catch((error) => {
+            console.log(videoItems.videoId);
+            console.log(error);
+        });
+      }
+    }, [isLoggedIn,videoItems.videoId]);
     const addComment = () => {
-        const newComment:CommentRequest={text:comment,userId=}
+        const newComment: CommentRequest = { text: comment, userId: userInfo?.userId, videoId: videoItems.videoId }
         const _axios = axios.create({
             baseURL: baseUrl,
             headers: {
@@ -26,23 +44,15 @@ const CommentBody = (videoItems: VideoItem) => {
                 'Content-Type': 'application/json', // Set the content type if needed
             },
         });
+        _axios.post(`${baseUrl}Comment`, newComment)
+            .then((response) => {
+                console.log('comment successfully');
+            })
+            .catch((error) => {
+                console.log('Comment that bai');
+            })
         //Them comment
     }
-    const commentsByPost = [
-        {
-            id: '123',
-            post_id: '123',
-            text: 'This is beatiful post',
-            user: {
-                userID: '123',
-                userName: 'TrieuDeptrai',
-                displayedName: 'Ngu ma li',
-                Email: 'phannhattrieu012@gmail.com',
-                Bio: '123',
-                avatar: 'string'
-            }
-        },
-    ]
 
     return (
         <>
@@ -57,8 +67,8 @@ const CommentBody = (videoItems: VideoItem) => {
                     <div>
                         {
                             commentsByPost.map((comment, index) => (
-                                <SingleComment key={index} text={comment.text}
-                                // user={comment.user}
+                                <SingleComment key={index} text={comment.text} created_at={comment.time}
+                                user={comment.user}
                                 />
                             ))
                         }
@@ -103,8 +113,8 @@ const CommentBody = (videoItems: VideoItem) => {
 
             </div>) :
                 (<button
-                onClick={()=>{ dispatch(setLoginRequestStatus(true));}}
-                className='absolute text-[16px] bg-gray-100 flex items-center justify-between bottom-0  w-full py-5 px-8 text-left text-[#F02C56]'>
+                    onClick={() => { dispatch(setLoginRequestStatus(true)); }}
+                    className='absolute text-[16px] bg-gray-100 flex items-center justify-between bottom-0  w-full py-5 px-8 text-left text-[#F02C56]'>
                     Log in to comment
                 </button>
                 )}

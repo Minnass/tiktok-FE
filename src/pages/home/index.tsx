@@ -3,11 +3,34 @@ import { DefaultLayout, PostMain } from '../../components'
 import axiosInstance from '../../aixos/axios'
 import { useState } from 'react'
 import { VideoModel } from '../../model'
+import { getUserInfo } from '../../service/userService'
+import { selectIsLoggedIn, setLoggedIn } from '../../store/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../store/store'
+import { setLikedVideos } from '../../store/likedVideos'
 export const HomePage = () => {
   const [searh, setSearch] = useState<string | null>(null)
   const [videoList, setVideoList] = useState<VideoModel[]>([])
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
+  const userInfo = getUserInfo();
+  if (userInfo != null) {
+    dispatch(setLoggedIn());
+  }
   useEffect(() => {
-    axiosInstance.get(`Post/${searh}`)
+    if (isLoggedIn) {
+      axiosInstance.get(`Like/getLikedVideo/${userInfo?.userId}`)
+        .then(
+          (response) => {
+            dispatch(setLikedVideos(response.data.data))
+          }
+        )
+        .catch((error) => {
+          console.log('Get all liked videos faced error');
+        })
+    }
+
+    axiosInstance.get(`Post/getAll/${searh}`)
       .then((response) => {
         if (response.status === 200) {
           setVideoList(response.data.data)
@@ -15,7 +38,7 @@ export const HomePage = () => {
       }).catch((error) => {
         console.error('Error fetching data:', error);
       })
-  }, [])
+  }, [isLoggedIn])
   return (
     <DefaultLayout>
       <div className='w-[calc(100%-90px)] max-w-[690px] ml-auto '  >

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { VideoItem } from '../../../types';
 import { AiFillHeart } from 'react-icons/ai';
 import { BiLoaderCircle } from 'react-icons/bi';
@@ -7,20 +7,26 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BASEURL } from '../../../const/baseUrl';
 import { LikeModel } from '../../../model';
-import { selectIsLoggedIn, selectIsLoginRequest } from '../../../store/auth';
+import { selectIsLoggedIn } from '../../../store/auth';
 import { RootState } from '../../../store/store';
 import { setLoginRequestStatus } from '../../../store/auth';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectLikedVideoIds } from '../../../store/likedVideos';
 function PostMainLike(post: VideoItem) {
     const baseUrl = BASEURL;
-    const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
     const dispatch = useDispatch();
+    const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
+    const likedVideos = useSelector((state: RootState) => selectLikedVideoIds(state));
     const [hasClickedLike, setHasClickLike] = useState<boolean>(false);
-    const [userLiked, setUserLiked] = useState<boolean>(false)
-
+    const [userLiked, setUserLiked] = useState<boolean>(false);
     const [comments, setComments] = useState<number>(post.comments || 0)
     const [likes, setLikes] = useState<number>(post.likes || 0)
     // const [shares, setShares] = useState<number>(0)
+
+    useEffect(() => {
+        setUserLiked(likedVideos.includes(post.videoId!));
+    }, [likedVideos]);
+
     const navigater = useNavigate();
     const likeOrUnlike = () => {
         if (!isLoggedIn) {
@@ -39,7 +45,7 @@ function PostMainLike(post: VideoItem) {
         });
 
         _axios.post(`${baseUrl}Like/like`, likeModel)
-        .then((response)=>{console.log('thahnh cong')})
+            .then((response) => { console.log('thahnh cong') })
             .catch((error) => {
                 console.log('that bai')
             });

@@ -8,7 +8,7 @@ export interface UserInfomation{
     userId?:number,
     userName?:string
 }
-export interface JwtResult{
+export interface JwtResult{ 
     accessToken:string,
     refreshToken:RefreshToken
 }

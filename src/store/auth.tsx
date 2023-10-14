@@ -15,24 +15,26 @@ const loginSlice = createSlice({
     name: 'login',
     initialState,
     reducers: {
-        setLoggedIn: (state,action:PayloadAction<LoginResult>) => {
+        setLoggedIn: (state) => {
             state.isLoggedIn = true;
+        },
+        setUserInfo: (state, action: PayloadAction<LoginResult>) => {
             localStorage.setItem('token', action.payload.jwtResult.accessToken);
-            localStorage.setItem('refreshToken',action.payload.jwtResult.refreshToken.tokenString);
-            localStorage.setItem('userInfo',JSON.stringify(action.payload.userInfomation))
+            localStorage.setItem('refreshToken', action.payload.jwtResult.refreshToken.tokenString);
+            localStorage.setItem('userInfo', JSON.stringify(action.payload.userInfomation))
         },
         setLoggedOut: (state) => {
             state.isLoggedIn = false;
             localStorage.clear();
         },
-        setLoginRequestStatus: (state,action:PayloadAction<boolean>) => {
+        setLoginRequestStatus: (state, action: PayloadAction<boolean>) => {
             state.isLoginRequest = action.payload;
-            
+
         },
     },
 });
 
-export const { setLoggedIn, setLoggedOut, setLoginRequestStatus } = loginSlice.actions;
+export const { setLoggedIn, setLoggedOut, setLoginRequestStatus, setUserInfo } = loginSlice.actions;
 export const selectIsLoggedIn = (state: { login: LoginState }) =>
     state.login.isLoggedIn;
 export const selectIsLoginRequest = (state: { login: LoginState }) =>

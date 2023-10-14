@@ -1,22 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi'
 import { VideoItem } from '../../types'
 import { CommentBody, CommentHeader } from '../../components'
-
+import { useParams } from 'react-router-dom'
+import { VideoModel } from '../../model'
+import axiosInstance from '../../aixos/axios'
+import { error } from 'console'
 
 const PostPage = () => {
-  const post: VideoItem = {
-    caption: 'Trieu dep trai',
-    comments: 1,
-    likes: 2,
-    shares: 3,
-    profile: {
+  const { postID } = useParams();
+  const [post, setPost] = useState<VideoModel | null>(null);
+  useEffect(() => {
 
-    },
-    videoURL: '../../utils/beach.mp4'
-  }
+    axiosInstance.get(`Post/${postID}`)
+      .then((response) => {
+        setPost(response.data.data);
 
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }, []);
   return (
     <>
       <div
@@ -44,7 +49,7 @@ const PostPage = () => {
             </button>
           </div>
 
-          {post.videoURL ? (
+          {true ? (
             <video
               className="fixed object-cover w-full my-auto  h-screen"
               src={require('../../utils/beach.mp4')}
@@ -68,9 +73,23 @@ const PostPage = () => {
 
           {
             post ?
-              (<CommentHeader caption='Trieu dep trai' />)
+              (<CommentHeader
+                caption={post.caption}
+                comments={post.comment}
+                likes={post.like}
+                videoId={post.videoId}
+                // shares={post.}
+                hasTag={post.hasTag}
+                profile={post.user}
+                uploadDate={post.uploadDate}
+                videoURL={post.videoUrl}
+              />)
               : (null)}
-          <CommentBody />
+          <CommentBody
+            caption={post?.caption}
+            videoId={post?.videoId}
+          />
+
         </div>
       </div>
     </>)

@@ -7,13 +7,15 @@ import { RootState, AppDispatch } from '../../store/store';
 import { setLoginRequestStatus, selectIsLoginRequest, selectIsLoggedIn } from '../../store/auth'
 import { useSelector, useDispatch } from 'react-redux';
 import { setNextRouter } from '../../store/nextRouter'
+import { getUserInfo } from '../../service/userService'
 
 const logo_path = require('../../utils/tikter.png');
 
 const Navbar = () => {
   //redux section
   const isLoggedIRequest = useSelector((state: RootState) => selectIsLoginRequest(state));
-  const isLoggedIn=useSelector((state:RootState)=>selectIsLoggedIn(state));
+  const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
+  const userInfo = getUserInfo();
   const dispatch: AppDispatch = useDispatch();
   //
   const navigater = useNavigate();
@@ -22,14 +24,14 @@ const Navbar = () => {
   }
 
   const uploadHandler = () => {
-    if (!isLoggedIRequest&&!isLoggedIn) {
+    if (!isLoggedIRequest && !isLoggedIn) {
       dispatch(setLoginRequestStatus(true));
       dispatch(setNextRouter('./upload'))
       return;
     }
     navigater('/upload');
   }
-  const loginHandler=()=>{
+  const loginHandler = () => {
     dispatch(setLoginRequestStatus(true));
   }
   return (
@@ -51,7 +53,7 @@ const Navbar = () => {
                   className='flex items-center justify-between w-full cursor-pointer hover:bg-[#F12B56] p-1 px-2 hover:text-white'
                 >
                   <div className='flex items-center'>
-                    <img className='rounded-md' width="40" src='https://placehold.co/40' alt='' />
+                    <img className='rounded-md' width="40" alt='' />
                     <div className='truncate ml-2'>John Week</div>
                   </div>
                 </a>
@@ -72,7 +74,7 @@ const Navbar = () => {
               <div className='flex items-center'>
                 <button className='flex items-center h-full bg-[#F02C56] text-white border rounded-md px-3 py-[6px]'>
                   <span className='whitespace-nowrap mx-4 font-medium text-[15px]'
-                  onClick={()=>loginHandler()}
+                    onClick={() => loginHandler()}
                   >Log in</span>
                 </button>
                 <BsThreeDotsVertical color='#161724' size='25' />
@@ -81,7 +83,7 @@ const Navbar = () => {
               <div className='flex items-center'>
                 <div className='relative'>
                   <button className='mt-1 border border-gray-200 rounded-full'>
-                    <img className='rounded-full w-[35px] h-[35px]' src='https://placehold.co/35' />
+                    <img className='rounded-full w-[35px] h-[35px]' src={(userInfo?.avatar == null) ? (require('../../utils/user.png')) : userInfo.avatar} />
                   </button>
                   <div className='hidden absolute bg-white rounded-lg py-1.5 w-[200px] shadow-xl border top-[50px] right-0'>
                     <button className='flex items-center w-full justify-start py-3 px-2 hover:bg-gray-100 cursor-pointer'>

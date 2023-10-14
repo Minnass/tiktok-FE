@@ -1,14 +1,15 @@
 import { UserInfomation } from "./loginResult";
 
 export interface CommentRequest{
-    videoId:number,
-    userId:number,
-    text:string
+    videoId?:number,
+    userId?:number,
+    text?:string
 }
 export interface CommentResult{
-    commentId:string,
-    videoId:string,
-    time:Date,
-    text:string,
-    user:UserInfomation,
+    commentId?:number,
+    videoId?:number,
+    time?:Date,
+    text?:string,
+    userId:number,
+    user?:UserInfomation,
 }

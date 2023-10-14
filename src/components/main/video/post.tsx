@@ -5,8 +5,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { AiFillHeart } from 'react-icons/ai';
 import { ImMusic } from 'react-icons/im';
 import PostMainLike from '../postMainLike/postMainLike';
+import { getUserInfo } from '../../../service/userService';
 const PostMain = (post: VideoItem) => {
-    const location = useLocation();
+    const userInfo = getUserInfo();
     useEffect(() => {
         const video = document.getElementById(`video-${post.videoId}`) as HTMLVideoElement
         const postMainElement = document.getElementById(`PostMain-${post.videoId}`)
@@ -38,7 +39,7 @@ const PostMain = (post: VideoItem) => {
                                 </span>
                             </div>
                         </Link>
-                        {location.pathname === '/' &&
+                        {post.profile?.userID !== userInfo?.userId &&
                             <button className='border text-[15px] px-[21px] py-0.5 border-[#F02C56] text-[#F02C56] hover:bg-[#ffeef2] font-semibold rounded-md'>
                                 Follow
                             </button>
@@ -59,14 +60,14 @@ const PostMain = (post: VideoItem) => {
                     </p>
                     <div className='mt-2.5 flex'>
                         <div className='relative min-h-[480px] max-h-[580px]   max-w-[260px] flex items-center    cursor-pointer'>
-                          <Link to={`/${post.profile?.userName}/${post.videoId}`}>
-                          <video
-                                id={`video-${post.videoId}`}
-                                controls
-                                muted
-                                className=' object-cover mx-auto rounded-lg h-full'
-                                src={require('../../../utils/beach.mp4')} />
-                          </Link>
+                            <Link to={`/${post.profile?.userName}/${post.videoId}`}>
+                                <video
+                                    id={`video-${post.videoId}`}
+                                    controls
+                                    muted
+                                    className=' object-cover mx-auto rounded-lg h-full'
+                                    src={require('../../../utils/beach.mp4')} />
+                            </Link>
                         </div>
                         <PostMainLike profile={post.profile} videoId={post.videoId} likes={post.likes} comments={post.comments} />
                     </div>
