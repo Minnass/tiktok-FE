@@ -9,16 +9,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { useLocation } from 'react-router-dom'
 export const HomePage = () => {
-  // const location = useLocation();
-  // const scrollPosition = location.state && location.state.scrollPosition;
-
-  // useEffect(() => {
-  //   if (scrollPosition !== undefined) {
-  //     window.scrollTo(0, scrollPosition);
-  //     console.log(scrollPosition);
-  //   }
-  // }, [scrollPosition]);
-
+  
   const [searh, setSearch] = useState<string | null>(null)
   const [videoList, setVideoList] = useState<VideoModel[]>([])
   const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));

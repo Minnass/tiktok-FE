@@ -35,7 +35,6 @@ const PostPage = () => {
         <div className="lg:w-[calc(100%-540px)] h-full  relative">
           <button
             onClick={() => {
-              const scrollPosition = window.scrollY;
               navigator(-1);
             }
             }
