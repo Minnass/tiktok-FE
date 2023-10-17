@@ -3,13 +3,15 @@ import loginReducer from './auth';
 import likedVideosReducer from './likedVideos'
 import nextRouterReducer from './nextRouter';
 import loadingReducer from './loading'
+import followingsReducer from './following'
 
 const store = configureStore({
   reducer: {
     login: loginReducer,
     likedVideos: likedVideosReducer,
     nextRouter:nextRouterReducer,
-    loading:loadingReducer
+    loading:loadingReducer,
+    following:followingsReducer
   },
   // ...other store configuration options
 });

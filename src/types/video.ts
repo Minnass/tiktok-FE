@@ -1,3 +1,4 @@
+import { UserInfomation } from "../model";
 import { HasTag } from "../model/hasTag";
 import { User } from "./user";
 

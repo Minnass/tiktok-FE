@@ -11,6 +11,7 @@ import { selectIsLoading } from './store/loading';
 import { getUserInfo } from './service/userService';
 import axiosInstance from './aixos/axios';
 import { setLikedVideos } from './store/likedVideos';
+import { setFollowing } from './store/following';
 
 function App() {
   const isLoading = useSelector((state: RootState) => selectIsLoading(state))
@@ -22,17 +23,23 @@ function App() {
     dispatch(setLoggedIn());
   }
   useEffect(() => {
- if (isLoggedIn) {
-    axiosInstance.get(`Like/getLikedVideo/${userInfo?.userId}`)
-      .then(
-        (response) => {
-          dispatch(setLikedVideos(response.data.data))
-        }
-      )
-      .catch((error) => {
-        console.log('Get all liked videos faced error');
-      })
-  }
+    if (isLoggedIn) {
+      axiosInstance.get(`Like/getLikedVideo/${userInfo?.userId}`)
+        .then(
+          (response) => {
+            dispatch(setLikedVideos(response.data.data))
+          }
+        )
+        .catch((error) => {
+        })
+      axiosInstance.get(`Follow/GetFollowing/${userInfo?.userId}`)
+        .then((response) => {
+          dispatch(setFollowing(response.data.data))
+        })
+        .catch((error) => {
+          console.log('Get followers faced error');
+        })
+    }
   }, [isLoggedIn])
   return (
     <>

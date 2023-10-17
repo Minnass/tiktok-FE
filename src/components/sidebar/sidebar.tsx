@@ -1,28 +1,47 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import MenuItem from './menuItem/menuItem'
 import FollowingUser from './followingItem/followingItem'
-
+import { MenuItemModel } from '../../model'
 const Sidebar = () => {
+  const navigator = useNavigate();
+  const [itemsMenu, setItemsMenu] = useState<MenuItemModel[]>([
+    { colorString: "F02C56", iconString: "For You", sizeString: "25", link: "/" },
+    { colorString: "F02C56", iconString: "Following", sizeString: "25", link: "/following" },
+    { colorString: "F02C56", iconString: "LIVE", sizeString: "25", link: "/live" },
+  ]);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    // Update the active item based on the current route
+    setItemsMenu((prevItems) =>
+      prevItems.map((item) => ({
+        ...item,
+        colorString: location.pathname === item.link ? "F02C56" : "",
+      }))
+    );
+  }, [location]);
+  
   return (
     <>
       <div className={`fixed z-20 bg-white  h-full  lg:border-r-0 border-r w-[75px] overflow-auto
       ${!true ? 'lg:w-[310px]' : 'lg:w-[220px]'}
       `}>
         <div className='lg:w-full w-[55px]'>
-          <Link to='/'>
+        {itemsMenu.map((item, index) => (
+          <div key={index} onClick={() => navigator(item.link)}>
             <MenuItem
-              iconString="For You"
-              colorString={true ? '#F02C56' : ''}
-              sizeString="25"
+              sizeString='25'
+              iconString={item.iconString}
+              colorString={item.colorString}
             />
-          </Link>
-          <MenuItem iconString='Following' colorString='#000000' sizeString='25' />
-          <MenuItem iconString='LIVE' colorString='#000000' sizeString='25' />
+          </div>
+        ))}
           <div className='border-b  lg:ml-2  mt-2' />
           <h3 className='lg:block hidden text-xs text-left text-gray-600 font-semibold pt-4 pb-2'>Suggested accounts</h3>
           <div className='lg:hidden block pt-3' />
-          <FollowingUser avatar='https://placehold.co/35' displayedName='Triesddasd 22222222222222 22yyyyyyuu' userName='trieu12_'   />
+          <FollowingUser avatar='https://placehold.co/35' displayedName='Triesddasd 22222222222222 22yyyyyyuu' userName='trieu12_' />
           <button className='lg:block hidden text-[#F0C56] pt-1.5 pl-2 text-[13px]'>
             See all
           </button>
@@ -31,7 +50,7 @@ const Sidebar = () => {
               <div className='border-b  lg:ml-2  mt-2' />
               <h3 className='lg:block hidden text-xs text-left text-gray-600 font-semibold pt-4 pb-2'>Following accounts</h3>
               <div className='lg:hidden block pt-3' />
-              <FollowingUser avatar='https://placehold.co/35' displayedName='Triesddasd 22222222222222 22yyyyyyuu' userName='trieu12_'  />
+              <FollowingUser avatar='https://placehold.co/35' displayedName='Triesddasd 22222222222222 22yyyyyyuu' userName='trieu12_' />
               <button className='lg:block hidden text-[#F0C56] pt-1.5 pl-2 text-[13px]'>
                 See more
               </button>
@@ -44,7 +63,7 @@ const Sidebar = () => {
             <p className="pt-4 px-2">Help Safety Terms Privacy Creator Portal Community Guidelines</p>
             <p className="pt-4 px-2">© 2023 TikTer</p>
           </div>
-        
+
           <div className="pb-14"></div>
         </div>
       </div>

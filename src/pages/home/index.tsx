@@ -4,17 +4,24 @@ import axiosInstance from '../../aixos/axios'
 import { useState } from 'react'
 import { VideoModel } from '../../model'
 import { getUserInfo } from '../../service/userService'
-import { selectIsLoggedIn,  } from '../../store/auth'
-import { useDispatch, useSelector } from 'react-redux'
+import { selectIsLoggedIn, } from '../../store/auth'
+import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
-import { setLikedVideos } from '../../store/likedVideos'
+import { useLocation } from 'react-router-dom'
 export const HomePage = () => {
+  // const location = useLocation();
+  // const scrollPosition = location.state && location.state.scrollPosition;
+
+  // useEffect(() => {
+  //   if (scrollPosition !== undefined) {
+  //     window.scrollTo(0, scrollPosition);
+  //     console.log(scrollPosition);
+  //   }
+  // }, [scrollPosition]);
+
   const [searh, setSearch] = useState<string | null>(null)
   const [videoList, setVideoList] = useState<VideoModel[]>([])
-  const dispatch = useDispatch();
   const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
-  const userInfo = getUserInfo();
-
   useEffect(() => {
     axiosInstance.get(`Post/getAll/${searh}`)
       .then((response) => {

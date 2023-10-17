@@ -12,7 +12,11 @@ import { CommentRequest, CommentResult } from '../../model'
 import { getUserInfo } from '../../service/userService'
 import axiosInstance from '../../aixos/axios'
 import { error } from 'console'
-const CommentBody = (videoItems: VideoItem) => {
+export interface CommentBodyProps{
+    videoItems:VideoItem,
+    newItemHandler:()=>void
+}
+const CommentBody = (props: CommentBodyProps) => {
     const baseUrl = BASEURL;
     const userInfo = getUserInfo();
     const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
@@ -25,22 +29,22 @@ const CommentBody = (videoItems: VideoItem) => {
     const token = localStorage.getItem('token');
     useEffect(() => {
         fetchDate();
-    }, [isLoggedIn, videoItems.videoId]);
+    }, [isLoggedIn, props.videoItems.videoId]);
     const fetchDate = () => {
-        if (videoItems.videoId != null) {
-            axiosInstance.get(`Comment/${videoItems.videoId}`)
+        if (props.videoItems.videoId != null) {
+            axiosInstance.get(`Comment/${props.videoItems.videoId}`)
                 .then((response) => {
                     setCommentsByPost(response.data.data);
                 })
                 .catch((error) => {
-                    console.log(videoItems.videoId);
+                    console.log(props.videoItems.videoId);
                     console.log(error);
                 });
         }
     }
     const addComment = () => {
         setComment('');
-        const newComment: CommentRequest = { text: comment, userId: userInfo?.userId, videoId: videoItems.videoId }
+        const newComment: CommentRequest = { text: comment, userId: userInfo?.userId, videoId: props.videoItems.videoId }
         const _axios = axios.create({
             baseURL: baseUrl,
             headers: {
@@ -51,6 +55,7 @@ const CommentBody = (videoItems: VideoItem) => {
         _axios.post(`${baseUrl}Comment`, newComment)
             .then((response) => {
                 fetchDate();
+                props.newItemHandler();
             })
             .catch((error) => {
                 console.log('Comment that bai');

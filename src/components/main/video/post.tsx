@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { VideoItem } from '../../../types'
 import { Link, useLocation } from 'react-router-dom';
@@ -6,8 +6,17 @@ import { AiFillHeart } from 'react-icons/ai';
 import { ImMusic } from 'react-icons/im';
 import PostMainLike from '../postMainLike/postMainLike';
 import { getUserInfo } from '../../../service/userService';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { addFollowing, removeFollowing, selectFollowingUser } from '../../../store/following';
+import axiosInstance from '../../../aixos/axios';
+import { FollowRequest } from '../../../model/FollowRequest';
+
 const PostMain = (post: VideoItem) => {
+    const followingUser =  useSelector((state: RootState) => selectFollowingUser(state));
     const userInfo = getUserInfo();
+    const [hasFollowed, setHasFollowed] = useState<boolean>(false);
+    const dispatch = useDispatch();
     useEffect(() => {
         const video = document.getElementById(`video-${post.videoId}`) as HTMLVideoElement
         const postMainElement = document.getElementById(`PostMain-${post.videoId}`)
@@ -18,6 +27,28 @@ const PostMain = (post: VideoItem) => {
             observer.observe(postMainElement);
         }
     }, []);
+    useEffect(() => {
+        setHasFollowed(followingUser.includes(post.profile?.userID!))
+    }, [followingUser]);
+    const followOrUnFollow = () => {
+        const followRequest: FollowRequest = {
+            followerId: userInfo?.userId,
+            followedId: post.profile?.userID
+        }
+        axiosInstance.post('Follow', followRequest)
+            .then((response) => {
+                if (hasFollowed) {
+                    dispatch(removeFollowing(post.profile?.userID!));
+                }
+                else {
+                    dispatch(addFollowing(post.profile?.userID!));
+                }
+                setHasFollowed(prev => !prev);
+            })
+            .catch((error) => {
+                console.log("That bai");
+            });
+    }
     return (
         <>
             <div id={`PostMain-${post.videoId}`} className='flex border-b py-5 min-w-[400px]'>
@@ -40,8 +71,10 @@ const PostMain = (post: VideoItem) => {
                             </div>
                         </Link>
                         {post.profile?.userID !== userInfo?.userId &&
-                            <button className='border text-[15px] px-[21px] py-0.5 border-[#F02C56] text-[#F02C56] hover:bg-[#ffeef2] font-semibold rounded-md'>
-                                Follow
+                            <button
+                                onClick={() => followOrUnFollow()}
+                                className='border text-[15px] px-[21px] py-0.5 border-[#F02C56] text-[#F02C56] hover:bg-[#ffeef2] font-semibold rounded-md'>
+                                {hasFollowed ? 'Following' : 'Follow'}
                             </button>
                         }
                     </div>

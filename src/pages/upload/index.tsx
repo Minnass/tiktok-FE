@@ -53,12 +53,11 @@ const UploadPage = () => {
           theme: 'colored'
         })
       }
-      clearVideo();
     }
     catch (error) {
       console.log(error);
-      clearVideo();
     }
+    clearVideo();
   }
 
   const discardHandler = () => {

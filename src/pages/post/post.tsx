@@ -3,16 +3,16 @@ import { AiOutlineClose } from 'react-icons/ai'
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi'
 import { VideoItem } from '../../types'
 import { CommentBody, CommentHeader } from '../../components'
-import { useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { VideoModel } from '../../model'
 import axiosInstance from '../../aixos/axios'
 
 const PostPage = () => {
+  const navigator = useNavigate();
   const [hasPopUp, setHasPopUp] = useState<boolean>(false);
   const { postID } = useParams();
   const [post, setPost] = useState<VideoModel | null>(null);
-  useEffect(() => {
-
+  const fetchData = () => {
     axiosInstance.get(`Post/${postID}`)
       .then((response) => {
         setPost(response.data.data);
@@ -21,17 +21,25 @@ const PostPage = () => {
       .catch((error) => {
         console.log(error);
       })
+  }
+  useEffect(() => {
+    fetchData();
   }, []);
+
   return (
     <>
       <div
         id="PostPage"
         className="lg:flex justify-between w-screen h-screen bg-black "
       >
-        <div className="lg:w-[calc(100%-540px)] h-full relative">
+        <div className="lg:w-[calc(100%-540px)] h-full  relative">
           <button
-            //  onClick={()={}
-            className="absolute text-white z-20 m-5 top-0 left-0 rounded-full bg-gray-700 p-1.5 hover:bg-gray-800">
+            onClick={() => {
+              const scrollPosition = window.scrollY;
+              navigator(-1);
+            }
+            }
+            className="absolute text-white cursor-pointer z-20 m-5 top-0 left-0 rounded-full bg-gray-700 p-1.5 hover:bg-gray-800">
             <AiOutlineClose size="27" />
           </button>
           <div >
@@ -70,7 +78,6 @@ const PostPage = () => {
           </div>
         </div>
         <div id="InfoSection" className="lg:max-w-[550px] relative overflow-auto w-full h-full bg-white">
-
           {
             post ?
               (<CommentHeader
@@ -80,16 +87,21 @@ const PostPage = () => {
                 videoId={post.videoId}
                 // shares={post.}
                 hasTag={post.hasTag}
-                profile={post.user}
+                profile={{ userID: post.user.userId, avatar: post.user.avatar, displayedName: post.user.displayedName, userName: post.user.userName }}
                 uploadDate={post.uploadDate}
                 videoURL={post.videoUrl}
               />)
               : (null)}
           <CommentBody
-            caption={post?.caption}
-            videoId={post?.videoId}
+            newItemHandler={fetchData}
+            videoItems={{
+              caption: post?.caption, hasTag: post?.hasTag, comments: post?.comment, likes: post?.like, profile: post?.user,
+              // shares:post.shares
+              uploadDate: post?.uploadDate,
+              videoId: post?.videoId,
+              videoURL: post?.videoUrl
+            }}
           />
-
         </div>
       </div>
     </>)

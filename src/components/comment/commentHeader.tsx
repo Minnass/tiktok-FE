@@ -12,7 +12,11 @@ import { selectIsLoggedIn, setLoginRequestStatus } from '../../store/auth'
 import { LikeModel } from '../../model'
 import axios from 'axios'
 import { BASEURL } from '../../const/baseUrl'
-import { selectLikedVideoIds } from '../../store/likedVideos'
+import { addLikedVideo, removeLikedVideo, selectLikedVideoIds } from '../../store/likedVideos'
+import { getUserInfo } from '../../service/userService'
+import { FollowRequest } from '../../model/FollowRequest'
+import axiosInstance from '../../aixos/axios'
+import { addFollowing, removeFollowing, selectFollowingUser } from '../../store/following'
 
 const CommentHeader = (item: VideoItem) => {
     const baseUrl = BASEURL;
@@ -24,18 +28,45 @@ const CommentHeader = (item: VideoItem) => {
     const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
     const likedVideos = useSelector((state: RootState) => selectLikedVideoIds(state));
     const dispatch = useDispatch();
+    const followingUser =  useSelector((state: RootState) => selectFollowingUser(state));
+    const userInfo = getUserInfo();
+    const [hasFollowed, setHasFollowed] = useState<boolean>(false);
+
+    useEffect(() => {
+        setHasFollowed(followingUser.includes(item.profile?.userID!));
+    }, [followingUser])
 
     useEffect(() => {
         setUserLiked(likedVideos.includes(item.videoId!));
     }, [likedVideos]);
 
+    const followOrUnFollow = () => {
+        const followRequest: FollowRequest = {
+            followerId: userInfo?.userId,
+            followedId: item.profile?.userID
+        }
+        axiosInstance.post('Follow', followRequest)
+            .then((response) => {
+                if (hasFollowed) {
+                    dispatch(removeFollowing(item.profile?.userID!));
+                }
+                else {
+                    dispatch(addFollowing(item.profile?.userID!));
+                }
+                setHasFollowed(prev => !prev);
+                console.log('Thanh cong')
+            })
+            .catch((error) => {
+                console.log("That bai");
+            });
+    }
 
     const likeOrUnlike = () => {
         if (!isLoggedIn) {
             dispatch(setLoginRequestStatus(true));
             return;
         }
-        const likeModel: LikeModel = { userId: item.profile?.userID, videoId: item.videoId }
+        const likeModel: LikeModel = { userId: userInfo?.userId, videoId: item.videoId }
         const token = localStorage.getItem('token');
         const _axios = axios.create({
             baseURL: baseUrl,
@@ -46,7 +77,14 @@ const CommentHeader = (item: VideoItem) => {
         });
 
         _axios.post(`${baseUrl}Like/like`, likeModel)
-            .then((response) => { console.log('thahnh cong') })
+            .then((response) => {
+                if (userLiked) {
+                    dispatch(addLikedVideo(item.videoId!))
+                }
+                else {
+                    dispatch(removeLikedVideo(item.videoId!))
+                }
+            })
             .catch((error) => {
                 console.log('that bai')
             });
@@ -85,9 +123,13 @@ const CommentHeader = (item: VideoItem) => {
                                 </p>
                             </div>
                         </div>
-                        <button className=' right-2 top-2 absolute border text-[15px] px-[21px]  bg-[#F02C56] text-white hover:bg-[#d25b43] font-semibold rounded-sm  py-1 px-2 '>
-                            {true ? `Follow` : `Following`}
-                        </button>
+                        {userInfo?.userId !== item.profile?.userID &&
+                            <button
+                                onClick={followOrUnFollow}
+                                className=' right-2 top-2 absolute border text-[15px] px-[21px]  bg-[#F02C56] text-white hover:bg-[#d25b43] font-semibold rounded-sm  py-1 px-2 '>
+                                {hasFollowed ? `Following` : `Follow`}
+                            </button>
+                        }
                     </div>
                     <div className='flex w-full  text-[14px] text-gray-500 pb-0.5 items-center'>
                         {

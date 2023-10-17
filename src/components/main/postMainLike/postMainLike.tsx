@@ -11,9 +11,12 @@ import { selectIsLoggedIn } from '../../../store/auth';
 import { RootState } from '../../../store/store';
 import { setLoginRequestStatus } from '../../../store/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectLikedVideoIds } from '../../../store/likedVideos';
+import { addLikedVideo, removeLikedVideo, selectLikedVideoIds } from '../../../store/likedVideos';
+import { userInfo } from 'os';
+import { getUserInfo } from '../../../service/userService';
 function PostMainLike(post: VideoItem) {
     const baseUrl = BASEURL;
+    const userInfo = getUserInfo();
     const dispatch = useDispatch();
     const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
     const likedVideos = useSelector((state: RootState) => selectLikedVideoIds(state));
@@ -33,8 +36,8 @@ function PostMainLike(post: VideoItem) {
             dispatch(setLoginRequestStatus(true));
             return;
         }
-        console.log(post);
-        const likeModel: LikeModel = { userId: post.profile?.userID, videoId: post.videoId }
+        const likeModel: LikeModel = { userId: userInfo?.userId, videoId: post.videoId }
+        console.log(likeModel);
         const token = localStorage.getItem('token');
         const _axios = axios.create({
             baseURL: baseUrl,
@@ -45,9 +48,16 @@ function PostMainLike(post: VideoItem) {
         });
 
         _axios.post(`${baseUrl}Like/like`, likeModel)
-            .then((response) => { console.log('thahnh cong') })
+            .then((response) => {
+                if (userLiked) {
+                    dispatch(removeLikedVideo(post.videoId!));
+                }
+                else {
+                    dispatch(addLikedVideo(post.videoId!));
+                }
+            })
             .catch((error) => {
-                console.log('that bai')
+                console.log(error);
             });
         if (userLiked) {
             setLikes(likes => likes - 1);
