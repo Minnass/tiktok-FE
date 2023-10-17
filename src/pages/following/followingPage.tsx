@@ -41,10 +41,10 @@ const FollowingPage = () => {
             hasTag={video.hasTag}
             profile={
               {
-                avatar: video.user.avatar,
-                displayedName: video.user.displayedName,
-                userName: video.user.userName,
-                userID: video.user.userId,
+                avatar: video.user!.avatar,
+                displayedName: video.user!.displayedName,
+                userName: video.user!.userName,
+                userID: video.user!.userId,
               }
             }
           />

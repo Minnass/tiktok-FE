@@ -12,6 +12,8 @@ import { getUserInfo } from './service/userService';
 import axiosInstance from './aixos/axios';
 import { setLikedVideos } from './store/likedVideos';
 import { setFollowing } from './store/following';
+import VideoSearch from './pages/searchPage/videoSearch';
+import AccountSearch from './pages/searchPage/accountSearch';
 
 function App() {
   const isLoading = useSelector((state: RootState) => selectIsLoading(state))
@@ -41,6 +43,7 @@ function App() {
         })
     }
   }, [isLoggedIn])
+
   return (
     <>
       {isLoading && <LoadingBar />}
@@ -49,12 +52,27 @@ function App() {
           <Routes>
             {publicRoutes.map((route, index) => {
               const Page = route.component;
-              return <Route key={index} path={route.path} element={
-                <>
-                  {isLoggedIRequest && <AuthOverlay />}
-                  <Page></Page>
-                </>
-              } />
+              const parts = route.path.split('/');
+              const cleanedParts = parts.slice(1);
+              const firstPart = cleanedParts[0];
+              const secondPart = cleanedParts[1];
+              if (firstPart === "search") {
+                return <Route key={index} path={`/${firstPart}`}
+                  element={<> {isLoggedIRequest && <AuthOverlay />}
+                    <Page></Page></>}
+                >
+                  <Route path={secondPart} element={(secondPart === "user") ? (<AccountSearch />) : (<VideoSearch />)} />
+                </Route>
+              }
+              else {
+                return <Route key={index} path={route.path} element={
+                  <>
+                    {isLoggedIRequest && <AuthOverlay />}
+                    <Page></Page>
+                  </>
+                } />
+              }
+
             })}
           </Routes>
         </div>

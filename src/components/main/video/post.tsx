@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { VideoItem } from '../../../types'
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AiFillHeart } from 'react-icons/ai';
 import { ImMusic } from 'react-icons/im';
 import PostMainLike from '../postMainLike/postMainLike';
@@ -13,6 +13,7 @@ import axiosInstance from '../../../aixos/axios';
 import { FollowRequest } from '../../../model/FollowRequest';
 
 const PostMain = (post: VideoItem) => {
+    const navigator=useNavigate();
     const followingUser =  useSelector((state: RootState) => selectFollowingUser(state));
     const userInfo = getUserInfo();
     const [hasFollowed, setHasFollowed] = useState<boolean>(false);
@@ -82,7 +83,10 @@ const PostMain = (post: VideoItem) => {
                     <div className='flex w-full  text-[14px] text-gray-500 pb-0.5 items-center'>
                         {
                             post.hasTag?.map((video) => (
-                                <p className='mr-2' key={video.hasTagId}>{`#${video.hasTagName}`}</p>
+                                <p onClick={()=>{
+                                    navigator(`/tag/${video.hasTagName}`)
+                                }} 
+                                 className='mr-2 hover:underline' key={video.hasTagId}>{`#${video.hasTagName}`}</p>
                             ))
                         }
                     </div>

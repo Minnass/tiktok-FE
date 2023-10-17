@@ -7,12 +7,12 @@ export interface VideoUpload{
     hashTag:string
 }
 export interface VideoModel{
-    videoId:number,
-    videoUrl:string,
-    caption:string,
-    uploadDate:Date,
-    like:number,
-    comment:number,
-    hasTag:HasTag[],
-    user:UserInfomation
+    videoId?:number,
+    videoUrl?:string,
+    caption?:string,
+    uploadDate?:Date,
+    like?:number,
+    comment?:number,
+    hasTag?:HasTag[],
+    user?:UserInfomation
 }

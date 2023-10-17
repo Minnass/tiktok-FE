@@ -99,7 +99,7 @@ const Sidebar = () => {
       `}>
         <div className='lg:w-full w-[55px]'>
           {itemsMenu.map((item, index) => (
-            <div key={index} onClick={() => navigator(item.link)}>
+            <div className='cursor-pointer'  key={index} onClick={() => navigator(item.link)}>
               <MenuItem
                 sizeString='25'
                 iconString={item.iconString}

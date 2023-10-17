@@ -86,7 +86,7 @@ const PostPage = () => {
                 videoId={post.videoId}
                 // shares={post.}
                 hasTag={post.hasTag}
-                profile={{ userID: post.user.userId, avatar: post.user.avatar, displayedName: post.user.displayedName, userName: post.user.userName }}
+                profile={{ userID: post.user!.userId, avatar: post.user!.avatar, displayedName: post.user!.displayedName, userName: post.user!.userName }}
                 uploadDate={post.uploadDate}
                 videoURL={post.videoUrl}
               />)
