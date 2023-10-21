@@ -5,6 +5,7 @@ import { BiErrorCircle } from "react-icons/bi"
 import { useEffect } from "react"
 import { Link } from 'react-router-dom'
 import { VideoItem } from '../../../types'
+import { BASEAPIURL, BASEURL } from '../../../const/baseUrl'
 
 const PostUser = (post: VideoItem) => {
 
@@ -35,7 +36,7 @@ const PostUser = (post: VideoItem) => {
                             muted
                             loop
                             className="aspect-[3/4] object-cover rounded-md"
-                            src={require('../../../utils/beach.mp4')}
+                            src={`${BASEURL}${post?.videoURL}`}
                         >
                         </video>
                     </Link>

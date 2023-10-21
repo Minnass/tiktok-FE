@@ -11,7 +11,7 @@ import { RootState } from '../../store/store'
 import { selectIsLoggedIn, setLoginRequestStatus } from '../../store/auth'
 import { LikeModel } from '../../model'
 import axios from 'axios'
-import { BASEURL } from '../../const/baseUrl'
+import { BASEAPIURL } from '../../const/baseUrl'
 import { addLikedVideo, removeLikedVideo, selectLikedVideoIds } from '../../store/likedVideos'
 import { getUserInfo } from '../../service/userService'
 import { FollowRequest } from '../../model/FollowRequest'
@@ -19,7 +19,7 @@ import axiosInstance from '../../aixos/axios'
 import { addFollowing, removeFollowing, selectFollowingUser } from '../../store/following'
 
 const CommentHeader = (item: VideoItem) => {
-    const baseUrl = BASEURL;
+    const baseUrl = BASEAPIURL;
     const [userLiked, setUserLiked] = useState<boolean>(false);
     const [updating, setUpdating] = useState<boolean>(false)
     const uploadDate = getDateString(new Date(item.uploadDate!))
@@ -28,7 +28,7 @@ const CommentHeader = (item: VideoItem) => {
     const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
     const likedVideos = useSelector((state: RootState) => selectLikedVideoIds(state));
     const dispatch = useDispatch();
-    const followingUser =  useSelector((state: RootState) => selectFollowingUser(state));
+    const followingUser = useSelector((state: RootState) => selectFollowingUser(state));
     const userInfo = getUserInfo();
     const [hasFollowed, setHasFollowed] = useState<boolean>(false);
 

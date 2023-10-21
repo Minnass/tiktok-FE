@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PostSearch from '../../components/main/video/postNameSearching'
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { BASEURL } from '../../const/baseUrl';
+import { BASEAPIURL } from '../../const/baseUrl';
 import { VideoModel } from '../../model';
 
 const VideoSearch = () => {
@@ -13,7 +13,7 @@ const VideoSearch = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const _axios = axios.create({
-      baseURL: BASEURL,
+      baseURL: BASEAPIURL,
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json', // Set the content type if needed
@@ -30,15 +30,15 @@ const VideoSearch = () => {
   }, [])
   return (
     <div className='mt-5 grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-2 gap-5'>
-      {videoList.map((item,index)=>(
-           <PostSearch  caption={item.caption}
-           hasTag={item.hasTag}
-           key={index}
-           uploadDate={item.uploadDate}
-           videoId={item.videoId}
-           user={item.user}
-           videoUrl={item.videoUrl}
-           />
+      {videoList.map((item, index) => (
+        <PostSearch caption={item.caption}
+          hasTag={item.hasTag}
+          key={index}
+          uploadDate={item.uploadDate}
+          videoId={item.videoId}
+          user={item.user}
+          videoUrl={item.videoUrl}
+        />
       ))}
     </div>
   )

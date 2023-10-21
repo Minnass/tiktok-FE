@@ -6,7 +6,7 @@ import SearchPage from "../pages/searchPage/searchPage";
 const publicRoutes=[
     {path:'/',component:HomePage},
     {path:'/following',component:FollowingPage},
-    {path:'/:userID',component:ProfilePage},
+    {path:'/:userName',component:ProfilePage},
     {path:'/upload',component:UploadPage},
     {path:'/:userID/:postID' ,component:PostPage},
     {path:'/tag/:tagName',component:TagSearchPage},

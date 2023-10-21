@@ -6,6 +6,7 @@ import { AxiosInstance } from 'axios';
 import axiosInstance from '../../aixos/axios';
 import { RegisterRequest } from '../../model';
 import { setLoading } from '../../store/loading';
+import { toast } from 'react-toastify';
 const Register = (props: RegisterProps) => {
   const [loading, setLoadingg] = useState<boolean>(false);
   const [name, setName] = useState<string | ''>('');
@@ -65,8 +66,17 @@ const Register = (props: RegisterProps) => {
           }
         })
         .catch(error => {
+          toast.error("Something was wrong!", {
+            autoClose: 1000,
+            theme: 'colored',
+            style: {
+              fontSize: '16px',
+            }
+          });
           console.log(error);
         });
+    }
+    else{
     }
     //Dnag nhap thanh cong
   }

@@ -6,6 +6,7 @@ import { CommentBody, CommentHeader } from '../../components'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { VideoModel } from '../../model'
 import axiosInstance from '../../aixos/axios'
+import { BASEAPIURL, BASEURL } from '../../const/baseUrl'
 
 const PostPage = () => {
   const navigator = useNavigate();
@@ -59,7 +60,7 @@ const PostPage = () => {
           {true ? (
             <video
               className="fixed object-cover w-full my-auto  h-screen"
-              src={require('../../utils/beach.mp4')}
+              src={`${BASEURL}${post?.videoUrl}`}
             />
           ) : null}
 
@@ -71,7 +72,7 @@ const PostPage = () => {
                 loop
                 muted
                 className="h-screen mx-auto"
-                src={require('../../utils/beach.mp4')}
+                src={`${BASEURL}${post?.videoUrl}`}
               />
             ) : null}
           </div>

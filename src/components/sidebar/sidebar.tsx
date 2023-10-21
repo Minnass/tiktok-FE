@@ -10,11 +10,11 @@ import axiosInstance from '../../aixos/axios'
 import { FollowingCollection } from '../../model/collection/pagedFollowingCollection'
 import { getUserInfo } from '../../service/userService'
 import { error } from 'console'
-import { BASEURL } from '../../const/baseUrl'
+import { BASEAPIURL } from '../../const/baseUrl'
 import axios from 'axios'
 import { SuggestedUser } from '../../model/collection/suggestedUser'
 const Sidebar = () => {
-  const baseUrl = BASEURL;
+  const baseUrl = BASEAPIURL;
   const navigator = useNavigate();
   const userInfo = getUserInfo();
   const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
@@ -72,25 +72,32 @@ const Sidebar = () => {
       pageNumber: suggestedPageNumber,
       pageSize: 2
     }
+
     if (isLoggedIn) {
       const token = localStorage.getItem('token');
       const _axios = axios.create({
         baseURL: baseUrl,
         headers: {
-          'Authorization': `Bearer ${token}`, // Add the Bearer token to the request header
-          'Content-Type': 'application/json', // Set the content type if needed
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       });
 
-      _axios.post(`User/GetSuggestedUsers/`,model)
+      _axios.post(`User/GetSuggestedUsers/`, model)
         .then((response) => {
-          setSuggestedUser(response.data.data);
+          const suggestedUsers: UserInfomation[] = response.data.data;
+          const notFollowingSuggestedUsers = suggestedUsers.filter(suggestedUser => {
+            // Check if the suggested user's userId is not in the followingUsers array
+            return !followingUsers.some(followingUser => followingUser.userId === suggestedUser.userId)
+              ;
+          });
+          setSuggestedUser(notFollowingSuggestedUsers);
         })
         .catch((error) => {
           console.log(error);
-        })
+        });
     }
-  }, [isLoggedIn, suggestedPageNumber])
+  }, [isLoggedIn, suggestedPageNumber, followingUsers]);
 
   return (
     <>
@@ -99,7 +106,9 @@ const Sidebar = () => {
       `}>
         <div className='lg:w-full w-[55px]'>
           {itemsMenu.map((item, index) => (
-            <div className='cursor-pointer'  key={index} onClick={() => navigator(item.link)}>
+            <div className='cursor-pointer' key={index} onClick={() => {
+              navigator(item.link)
+            }}>
               <MenuItem
                 sizeString='25'
                 iconString={item.iconString}

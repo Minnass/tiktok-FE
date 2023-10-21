@@ -4,14 +4,20 @@ import Register from './register'
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import {  setLoginRequestStatus } from "../../store/auth";
+import { setLoginRequestStatus } from "../../store/auth";
+import { ToastContainer, toast } from "react-toastify";
 export default function AuthOverlay() {
     //redux section
-    
+
     const dispatch = useDispatch();
     let [isRegister, setIsRegister] = useState<boolean>(false)
- 
+
     const handleSucessfulRegister = () => {
+        toast.success("You registered successfully", {
+            autoClose: 1000,
+            theme: 'colored',
+            style: { fontStyle: '16px' }
+        })
         setIsRegister(false)
     }
     const closeLogin = () => {
@@ -19,6 +25,7 @@ export default function AuthOverlay() {
     }
     return (
         <>
+            <ToastContainer />
             <div
                 id="AuthOverlay"
                 className="fixed flex items-center justify-center z-50 top-0 left-0 w-full h-full bg-black bg-opacity-50"

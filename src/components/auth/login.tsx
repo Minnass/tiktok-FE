@@ -9,6 +9,7 @@ import { selectNextRouter, setNextRouter } from "../../store/nextRouter";
 import { RootState } from "../../store/store";
 import { LoginRequest } from '../../model';
 import axiosInstance from '../../aixos/axios';
+import { ToastContainer, toast } from 'react-toastify';
 const Login = (props: LoginProp) => {
   //redux section
   const dispatch = useDispatch();
@@ -40,33 +41,49 @@ const Login = (props: LoginProp) => {
   const login = () => {
     setLoading(true)
     if (!validate()) {
-      const loginRequest:LoginRequest={
-        password:password,
-        userName:userName
+      const loginRequest: LoginRequest = {
+        password: password,
+        userName: userName
       }
-      axiosInstance.post('/Account/login',loginRequest)
-      .then((response)=>{
-        props.successfulLoginListener();
-        if (nextRouter !== '') {
-          navigater(nextRouter);
+      axiosInstance.post('/Account/login', loginRequest)
+        .then((response) => {
+          props.successfulLoginListener();
+          if (nextRouter !== '') {
+            navigater(nextRouter);
+          }
+          dispatch(setLoggedIn());
+          dispatch(setUserInfo(response.data.data))
+          setLoading(false)
+        })
+        .catch(error => {
+          setLoading(false)
+          toast.error("UserName or Password not correct", {
+            autoClose: 1000,
+            theme: 'colored',
+            style: {
+              fontSize: '16px',
+            }
+          });
+        });
+    }
+    else {
+      toast.error("Something was wrong!", {
+        autoClose: 1000,
+        theme: 'colored',
+        style: {
+          fontSize: '16px',
         }
-        dispatch(setLoggedIn());
-        dispatch(setUserInfo(response.data.data))
-        setLoading(false)
-      })
-      .catch(error=>{
-        setLoading(false)
       });
     }
-   
-    
+
+
   }
-  
+
   return (
     <>
       <div>
+        <ToastContainer />
         <h1 className="text-center text-[28px] mb-4 font-bold">Log in</h1>
-
         <div className="px-4 py-1 text-[14px]" >
           <TextInput
             string={userName}

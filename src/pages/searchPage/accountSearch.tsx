@@ -3,17 +3,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { UserInfomation } from '../../model';
 import axios from 'axios';
 import { error } from 'console';
-import { BASEURL } from '../../const/baseUrl';
+import { BASEAPIURL } from '../../const/baseUrl';
 
 const AccountSearch = () => {
-    const navigator=useNavigate();
+    const navigator = useNavigate();
     const { search } = useLocation();
     const queryParams = new URLSearchParams(search);
     const query = queryParams.get('q');
     const [accountList, setAccountList] = useState<UserInfomation[]>([])
     useEffect(() => {
         const _axios = axios.create({
-            baseURL: BASEURL,
+            baseURL: BASEAPIURL,
             headers: {
                 'Content-Type': 'application/json', // Set the content type if needed
             },
@@ -30,9 +30,9 @@ const AccountSearch = () => {
         <>
             {
                 accountList.map((item, index) => (
-                    <div key={index} 
-                    onClick={()=>navigator(`/${item.userName!}`)}
-                    className='
+                    <div key={index}
+                        onClick={() => navigator(`/${item.userName!}`)}
+                        className='
                     flex items-center p-3 cursor-pointer hover:bg-gray-200'>
                         <img height={60} width={60} className='rounded-full h-full ' src={(item.avatar != null) ? item.avatar : require('../../utils/user.png')} />
                         <div className='flex h-full flex-col ml-3 w-full'>

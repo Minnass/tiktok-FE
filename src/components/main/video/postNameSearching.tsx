@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { VideoModel } from '../../../model'
 import { Link, useNavigate } from 'react-router-dom'
 import getDateString from '../../../utils/convertDateToString'
+import { BASEAPIURL, BASEURL } from '../../../const/baseUrl'
 
 const PostSearch = (post: VideoModel) => {
   const navigator = useNavigate();
@@ -27,7 +28,7 @@ const PostSearch = (post: VideoModel) => {
               muted
               loop
               className="aspect-[3/4] object-cover rounded-md"
-              src={require('../../../utils/beach.mp4')}
+              src={`${BASEURL}${post?.videoUrl}`}
             >
             </video>
           </Link>

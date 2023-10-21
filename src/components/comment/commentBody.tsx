@@ -7,17 +7,17 @@ import { selectIsLoggedIn, setLoginRequestStatus } from '../../store/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import axios from 'axios'
-import { BASEURL } from '../../const/baseUrl'
+import { BASEAPIURL } from '../../const/baseUrl'
 import { CommentRequest, CommentResult } from '../../model'
 import { getUserInfo } from '../../service/userService'
 import axiosInstance from '../../aixos/axios'
 import { error } from 'console'
-export interface CommentBodyProps{
-    videoItems:VideoItem,
-    newItemHandler:()=>void
+export interface CommentBodyProps {
+    videoItems: VideoItem,
+    newItemHandler: () => void
 }
 const CommentBody = (props: CommentBodyProps) => {
-    const baseUrl = BASEURL;
+    const baseUrl = BASEAPIURL;
     const userInfo = getUserInfo();
     const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
     const dispatch = useDispatch();

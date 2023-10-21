@@ -5,7 +5,7 @@ import { BiLoaderCircle } from 'react-icons/bi';
 import { FaShare, FaCommentDots } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { BASEURL } from '../../../const/baseUrl';
+import { BASEAPIURL } from '../../../const/baseUrl';
 import { LikeModel } from '../../../model';
 import { selectIsLoggedIn } from '../../../store/auth';
 import { RootState } from '../../../store/store';
@@ -15,7 +15,7 @@ import { addLikedVideo, removeLikedVideo, selectLikedVideoIds } from '../../../s
 import { userInfo } from 'os';
 import { getUserInfo } from '../../../service/userService';
 function PostMainLike(post: VideoItem) {
-    const baseUrl = BASEURL;
+    const baseUrl = BASEAPIURL;
     const userInfo = getUserInfo();
     const dispatch = useDispatch();
     const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));

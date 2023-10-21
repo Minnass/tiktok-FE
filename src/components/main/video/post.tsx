@@ -11,10 +11,11 @@ import { RootState } from '../../../store/store';
 import { addFollowing, removeFollowing, selectFollowingUser } from '../../../store/following';
 import axiosInstance from '../../../aixos/axios';
 import { FollowRequest } from '../../../model/FollowRequest';
+import { BASEAPIURL, BASEURL } from '../../../const/baseUrl';
 
 const PostMain = (post: VideoItem) => {
-    const navigator=useNavigate();
-    const followingUser =  useSelector((state: RootState) => selectFollowingUser(state));
+    const navigator = useNavigate();
+    const followingUser = useSelector((state: RootState) => selectFollowingUser(state));
     const userInfo = getUserInfo();
     const [hasFollowed, setHasFollowed] = useState<boolean>(false);
     const dispatch = useDispatch();
@@ -83,10 +84,10 @@ const PostMain = (post: VideoItem) => {
                     <div className='flex w-full  text-[14px] text-gray-500 pb-0.5 items-center'>
                         {
                             post.hasTag?.map((video) => (
-                                <p onClick={()=>{
+                                <p onClick={() => {
                                     navigator(`/tag/${video.hasTagName}`)
-                                }} 
-                                 className='mr-2 hover:underline' key={video.hasTagId}>{`#${video.hasTagName}`}</p>
+                                }}
+                                    className='mr-2 hover:underline' key={video.hasTagId}>{`#${video.hasTagName}`}</p>
                             ))
                         }
                     </div>
@@ -96,14 +97,16 @@ const PostMain = (post: VideoItem) => {
                         <AiFillHeart size='20' />
                     </p>
                     <div className='mt-2.5 flex'>
-                        <div className='relative min-h-[480px] max-h-[580px]   max-w-[260px] flex items-center    cursor-pointer'>
+                        <div className='relative min-h-[480px] max-h-[580px] rounded-lg bg-black max-w-[260px] flex items-center   cursor-pointer'>
                             <Link to={`/${post.profile?.userName}/${post.videoId}`}>
                                 <video
                                     id={`video-${post.videoId}`}
                                     controls
                                     muted
-                                    className=' object-cover mx-auto rounded-lg h-full'
-                                    src={require('../../../utils/beach.mp4')} />
+
+                                    className=' object-cover z-10 relative  h-full'
+                                    src={`${BASEURL}${post.videoURL}`}
+                                />
                             </Link>
                         </div>
                         <PostMainLike profile={post.profile} videoId={post.videoId} likes={post.likes} comments={post.comments} />
