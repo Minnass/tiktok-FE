@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { ErrorObject, RegisterProps } from '../../types';
 import { BiLoaderCircle } from 'react-icons/bi';
 import TextInput from '../textInput/textInput';
-import { AxiosInstance } from 'axios';
 import axiosInstance from '../../aixos/axios';
 import { RegisterRequest } from '../../model';
 import { setLoading } from '../../store/loading';

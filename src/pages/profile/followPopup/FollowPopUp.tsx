@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
 import { FollowPopUpProps } from '../../../types/followPopupProps'
-import { UserInfomation } from '../../../model'
-import { useNavigate } from 'react-router-dom'
+import { FollowRequest, UserInfomation } from '../../../model'
 import { motion } from 'framer-motion'
 import { getUserInfo } from '../../../service/userService'
-import { useSelector } from 'react-redux'
-import { selectFollowingUser } from '../../../store/following'
-import { RootState } from '../../../store/store'
+import axios from 'axios'
+import { BASEAPIURL } from '../../../const/baseUrl'
+import FollowItem from './followItem'
 
 const FollowPopUp = (props: FollowPopUpProps) => {
-    const userInfo = getUserInfo();
-    const navigator = useNavigate();
+  
     const [followerMode, setFollowerMode] = useState<boolean>(true)
     const [userList, setUserList] = useState<UserInfomation[] | null>([]);
-    const followingUser = useSelector((state: RootState) => selectFollowingUser(state));
-
     useEffect(() => {
         setFollowerMode(props.mode)
     }
@@ -23,12 +19,13 @@ const FollowPopUp = (props: FollowPopUpProps) => {
     )
     useEffect(() => {
         if (followerMode) {
-            setUserList(props.followModel?.followings!)
-        }
-        else {
             setUserList(props.followModel?.followers!)
         }
+        else {
+            setUserList(props.followModel?.followings!)
+        }
     }, [followerMode])
+
     return (
         <div
 
@@ -51,30 +48,7 @@ const FollowPopUp = (props: FollowPopUpProps) => {
                 </div>
                 {userList &&
                     userList.map((user, index) => (
-                        <div key={index} className='p-2 flex items-center justify-between cursor-pointer'
-                            onClick={() => {
-                                navigator(`/${user.userName}`);
-                                props.closeButtonHandler()
-                            }
-
-                        }
-                        >
-                            <div className='flex'>
-                                <img src={(user.avatar == null) ? require('../../../utils/user.png') : user.avatar} height={48} width={48} />
-                                <div className='max-w-[200px] ml-3'>
-                                    <p className='text-[16px] font-extrabold truncate'>
-                                        {user.displayedName}
-                                    </p >
-                                    <p className='text-[15px] font-light truncate'>
-                                        {user.userName}
-                                    </p>
-                                </div>
-                            </div>
-
-                            {userInfo && userInfo.userId !== user.userId && <button className="flex item-center rounded-md py-1.5 px-4 mt-3 text-[15px] text-white font-semibold bg-[#F02C56]">
-                                {followingUser.includes(user.userId!) ? 'Following' : 'Follow'}
-                            </button>}
-                        </div>
+                        <FollowItem user={user} closePopUpHandler={props.closeButtonHandler} key={index} />
                     ))
                 }
 

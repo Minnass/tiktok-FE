@@ -8,18 +8,25 @@ import { BsPencil } from 'react-icons/bs';
 import TextInput from '../textInput/textInput';
 import { BiLoaderCircle } from 'react-icons/bi'
 import { motion } from 'framer-motion'
-
+import { getUserInfo } from '../../service/userService'
+import axiosInstance from '../../aixos/axios'
+import { ToastContainer, toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import { setLoggedOut } from '../../store/auth'
 
 const EditProfile = (props: ProfileEditorProps) => {
+  const user = getUserInfo();
   const [file, setFile] = useState<File | null>(null);
   const [cropper, setCropper] = useState<CropperDimensions | null>(null);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const [userImage, setUserImage] = useState<string | ''>('https://placehold.co/90');
-  const [userName, setUserName] = useState<string | ''>('123');
-  const [userBio, setUserBio] = useState<string | ''>('');
+  const [userImage, setUserImage] = useState<string | null>(user?.avatar!);
+  const [displayedName, setUserName] = useState<string | null>(user?.displayedName!);
+  const [userBio, setUserBio] = useState<string | undefined>(user?.bio);
   const [isUpdating, setIsUpdating] = useState(false);
   const [Error, setError] = useState<ErrorObject | null>(null)
   const inputFileRef = useRef<HTMLInputElement | null>(null);
+  const dispatch = useDispatch();
+
 
   const showError = (type: string) => {
     if (Error && Object.entries(Error).length > 0 && Error?.type == type) {
@@ -40,14 +47,36 @@ const EditProfile = (props: ProfileEditorProps) => {
     }
   }
   const cropAndUpdateImage = () => {
-    console.log('Crop image');
+    setUserImage(uploadedImage);
   }
-  const updateUserInfo = () => {
-    console.log('update image')
+  const updateUserInfo = async () => {
+    try {
+      const formData = new FormData();
+      // formData.append('videoFile', file!)
+      formData.append('displayedName', displayedName!);
+      formData.append('bio', userBio!);
+      const response = await axiosInstance.post('/User/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if (response.status === 200) {
+        dispatch(setLoggedOut())
+        toast.success("Edit user successfully, you have to log in again!", {
+          autoClose: 1000,
+          theme: 'colored'
+        })
+        window.location.reload();
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
   }
-
+  console.log(userBio)
   return (
     <>
+      <ToastContainer />
       <div id="EditProfileOverlay"
         className="fixed flex justify-center pt-14 md:pt-[40px] z-50 top-0 left-0 w-full h-full bg-black bg-opacity-50 overflow-auto"
       >
@@ -81,7 +110,7 @@ const EditProfile = (props: ProfileEditorProps) => {
                   </h3>
                   <div className="flex items-center justify-center sm:-mt-6">
                     <label htmlFor="image" className="relative cursor-pointer"   >
-                      <img className="rounded-full" width="95" src={userImage} />
+                      <img className="rounded-full" width="95" src={(userImage != null) ? userImage : require('../../utils/user.png')} />
                       <button className=" absolute bottom-0 right-0 rounded-full bg-white shadow-xl border p-1 border-gray-300 inline-block w-[32px] h-[32px]
                       "
                         onClick={() =>
@@ -110,11 +139,11 @@ const EditProfile = (props: ProfileEditorProps) => {
                     <div className="sm:w-[60%] w-full max-w-md">
 
                       <TextInput
-                        string={userName}
-                        placeHolder={userName}
+                        string={displayedName!}
+                        placeHolder={displayedName!}
                         onUpdate={setUserName}
                         inputType="text"
-                        error={showError('userName')}
+                        error={showError('displayedName')}
                       />
 
                       <p className={`relative text-[11px] text-gray-500 ${Error ? 'mt-1' : 'mt-4'}`}>
