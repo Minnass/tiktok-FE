@@ -51,7 +51,9 @@ const PostSearch = (post: VideoModel) => {
           </div>
         </div>
         <div className='flex'>
-          <img height={30} width={30} className='rounded-full h-full ' src={require('../../../utils/user.png')} />
+          <img height={30} width={30} className='rounded-full h-full ' 
+           src={post.user?.avatar? `${BASEURL}${post.user.avatar}` :require('../../../utils/user.png')}
+          />
           <p className='truncate ml-2'>{post.user?.displayedName}</p>
         </div>
       </div>

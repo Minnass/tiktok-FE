@@ -8,12 +8,12 @@ import axiosInstance from '../../aixos/axios';
 import { useLocation, useParams } from 'react-router-dom';
 import { getUserInfo } from '../../service/userService';
 import FollowPopUp from './followPopup/FollowPopUp';
-import { selectIsLoggedIn } from '../../store/auth';
+import { selectIsLoggedIn, setLoginRequestStatus } from '../../store/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { addFollowing, removeFollowing } from '../../store/following';
 import axios from 'axios';
-import { BASEAPIURL } from '../../const/baseUrl';
+import { BASEAPIURL, BASEURL } from '../../const/baseUrl';
 
 export const ProfilePage = () => {
     const userInfo = getUserInfo();
@@ -71,32 +71,39 @@ export const ProfilePage = () => {
             setFollowersMode(mode);
     };
     const followOrUnFollow = () => {
-        const token = localStorage.getItem('token');
-        const _axios = axios.create({
-            baseURL: BASEAPIURL,
-            headers: {
-                'Authorization': `Bearer ${token}`, // Add the Bearer token to the request header
-                'Content-Type': 'application/json', // Set the content type if needed
-            },
-        });
-        const followRequest: FollowRequest = {
-            followerId: userInfo?.userId,
-            followedId: user?.userId
-        };
+        if (!isLoggedIn) {
+            dispatch(setLoginRequestStatus(true))
+        }
+        else {
 
-        _axios.post('Follow', followRequest)
-            .then((response) => {
-                if (isFollowing) {
-                    dispatch(removeFollowing((user?.userId)!));
-                }
-                else {
-                    dispatch(addFollowing((user?.userId)!));
-                }
-                setIsFollowing(prev => !prev)
-            })
-            .catch((error) => {
-                console.log("That bai");
+            const token = localStorage.getItem('token');
+            const _axios = axios.create({
+                baseURL: BASEAPIURL,
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Add the Bearer token to the request header
+                    'Content-Type': 'application/json', // Set the content type if needed
+                },
             });
+            const followRequest: FollowRequest = {
+                followerId: userInfo?.userId,
+                followedId: user?.userId
+            };
+
+            _axios.post('Follow', followRequest)
+                .then((response) => {
+                    if (isFollowing) {
+                        dispatch(removeFollowing((user?.userId)!));
+                    }
+                    else {
+                        dispatch(addFollowing((user?.userId)!));
+                    }
+                    setIsFollowing(prev => !prev)
+                })
+                .catch((error) => {
+                    console.log("That bai");
+                });
+        }
+
     };
 
     return (
@@ -108,7 +115,7 @@ export const ProfilePage = () => {
                     <div className="ml-[90px] min-w-[460px] 2xl:pl-[185px] lg:pl-[160px] lg:pr-0 w-[calc(100%-90px)] pr-3 max-w-[1800px] 2xl:mx-auto">
                         <div className="flex ">
                             {user ? (
-                                <img className="w-[116px] min-w-[116px] rounded-full" src={(user.avatar == null) ? require('../../utils/user.png') : user.avatar} />
+                                <img className="w-[116px] min-w-[116px] rounded-full" src={(user.avatar == null) ? require('../../utils/user.png') : `${BASEURL}${user.avatar}`} />
                             ) : (
                                 <div className="min-w-[150px] h-[120px] bg-gray-200 rounded-full" />
                             )}
@@ -162,7 +169,7 @@ export const ProfilePage = () => {
                         </ul>
                         <div className="mt-4 grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3">
                             {videoList.map((video, index) => (
-                                <PostUser comments={video.comment} likes={video.like} videoURL={video.videoUrl} shares={12} caption={video.caption} key={index} />
+                                <PostUser comments={video.comment} likes={video.like} videoURL={video.videoUrl} videoId={video.videoId} shares={12} caption={video.caption} key={index} />
                             ))}
 
                         </div>

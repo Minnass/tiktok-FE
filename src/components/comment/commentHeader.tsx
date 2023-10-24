@@ -11,7 +11,7 @@ import { RootState } from '../../store/store'
 import { selectIsLoggedIn, setLoginRequestStatus } from '../../store/auth'
 import { LikeModel } from '../../model'
 import axios from 'axios'
-import { BASEAPIURL } from '../../const/baseUrl'
+import { BASEAPIURL, BASEURL } from '../../const/baseUrl'
 import { addLikedVideo, removeLikedVideo, selectLikedVideoIds } from '../../store/likedVideos'
 import { getUserInfo } from '../../service/userService'
 import { FollowRequest } from '../../model/FollowRequest'
@@ -107,7 +107,7 @@ const CommentHeader = (item: VideoItem) => {
                     <div className='relative flex items-center '>
                         <img className='rounded-full'
                             width={40}
-                            src={(item.profile?.avatar == null) ? require('../../utils/user.png') : item.profile.avatar}
+                            src={(item.profile?.avatar == null) ? require('../../utils/user.png') : `${BASEURL}${item.profile.avatar}`}
                             alt=''
                         />
                         <div className='ml-2' >

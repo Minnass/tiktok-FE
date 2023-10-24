@@ -8,6 +8,7 @@ import getDateString from '../../utils/convertDateToString'
 import { getUserInfo } from '../../service/userService'
 import axiosInstance from '../../aixos/axios'
 import { motion } from 'framer-motion'
+import { BASEURL } from '../../const/baseUrl'
 const SingleComment = ({ created_at, text, user, id, deleteHandler }: SingleCommentProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
   const [hasPopUp, setHasPopUp] = useState<boolean>(false)
@@ -30,7 +31,7 @@ const SingleComment = ({ created_at, text, user, id, deleteHandler }: SingleComm
       });
   }
   return (
-    <>  
+    <>
       {hasPopUp &&
         <motion.div
           initial={
@@ -64,7 +65,7 @@ const SingleComment = ({ created_at, text, user, id, deleteHandler }: SingleComm
             <img
               className="absolute top-0 rounded-full lg:mx-0 mx-auto"
               width="40"
-              src={(user?.avatar == null) ? require('../../utils/user.png') : require(user.avatar)}
+              src={(user?.avatar == null) ? require('../../utils/user.png') : `${BASEURL}${user.avatar}`}
               alt=''
             />
           </Link>

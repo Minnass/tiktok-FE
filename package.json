@@ -13,6 +13,7 @@
     "@types/react-dom": "^18.2.0",
     "axios": "^0.24.0",
     "framer-motion": "^10.16.4",
+    "image-js": "^0.35.5",
     "react": "^18.2.0",
     "react-advanced-cropper": "^0.19.3",
     "react-dom": "^18.2.0",

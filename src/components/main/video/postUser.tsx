@@ -8,7 +8,6 @@ import { VideoItem } from '../../../types'
 import { BASEAPIURL, BASEURL } from '../../../const/baseUrl'
 
 const PostUser = (post: VideoItem) => {
-
     useEffect(() => {
         const video = document.getElementById(`video${post?.videoId}`) as HTMLVideoElement
 
@@ -30,7 +29,7 @@ const PostUser = (post: VideoItem) => {
                         <AiOutlineLoading3Quarters className="animate-spin ml-1" size="80" color="#FFFFFF" />
                     </div>
                 ) : (
-                    <Link to={`/${1}/${2}`}>
+                    <Link to={`${post.videoId}`}>
                         <video
                             id={`video${post.videoId}`}
                             muted

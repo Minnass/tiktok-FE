@@ -8,6 +8,7 @@ import { setLoginRequestStatus, selectIsLoginRequest, selectIsLoggedIn } from '.
 import { useSelector, useDispatch } from 'react-redux';
 import { setNextRouter } from '../../store/nextRouter'
 import { getUserInfo } from '../../service/userService'
+import { BASEURL } from '../../const/baseUrl'
 
 const logo_path = require('../../utils/tikter.png');
 
@@ -83,7 +84,7 @@ const Navbar = () => {
               <div className='flex items-center'>
                 <div className='relative'>
                   <button className='mt-1 border border-gray-200 rounded-full'>
-                    <img className='rounded-full w-[35px] h-[35px]' src={(userInfo?.avatar == null) ? (require('../../utils/user.png')) : userInfo.avatar} />
+                    <img className='rounded-full w-[35px] h-[35px]' src={(userInfo?.avatar == null) ? (require('../../utils/user.png')) :`${BASEURL}${userInfo.avatar}` } />
                   </button>
                   <div className='hidden absolute bg-white rounded-lg py-1.5 w-[200px] shadow-xl border top-[50px] right-0'>
                     <button className='flex items-center w-full justify-start py-3 px-2 hover:bg-gray-100 cursor-pointer'>

@@ -57,7 +57,7 @@ const PostMain = (post: VideoItem) => {
                 <div className='cursor-pointer '>
                     <Link to={`/${post.profile?.userName}`}>
                         <img className='rounded-full max-h-[60px]' width="60" src={(post?.profile?.avatar == null) ?
-                            (require('../../../utils/user.png')) : (post?.profile?.avatar)} />
+                            (require('../../../utils/user.png')) : `${BASEURL}${post.profile.avatar}`} />
                     </Link>
                 </div>
                 <div className='pl-3 w-full px-4 text-left'>

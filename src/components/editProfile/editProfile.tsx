@@ -13,7 +13,7 @@ import axiosInstance from '../../aixos/axios'
 import { ToastContainer, toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
 import { setLoggedOut } from '../../store/auth'
-
+import Image from "image-js";
 const EditProfile = (props: ProfileEditorProps) => {
   const user = getUserInfo();
   const [file, setFile] = useState<File | null>(null);
@@ -46,13 +46,36 @@ const EditProfile = (props: ProfileEditorProps) => {
       setUploadedImage(null);
     }
   }
-  const cropAndUpdateImage = () => {
-    setUserImage(uploadedImage);
+
+  const cropAndUpdateImage = async () => {
+    if (cropper) {
+      const x = cropper.left!;
+      const y = cropper.top!;
+      const width = cropper.width!;
+      const height = cropper.height!;
+      try {
+        const response = await fetch(URL.createObjectURL(file!));
+        const imageBuffer = await response.arrayBuffer();
+        const image = await Image.load(imageBuffer)
+        const croppedImage = image.crop({ x, y, width, height });
+        const resizedImage = croppedImage.resize({ width: 200, height: 200 });
+        const blob = await resizedImage.toBlob();
+        const arrayBuffer = await blob.arrayBuffer();
+        const finalFile = new File([arrayBuffer], file!.name, { type: blob.type });
+        setFile(finalFile);
+        const newImageUrl = URL.createObjectURL(blob);
+        setUserImage(newImageUrl);
+        setUploadedImage(null)
+      }
+      catch (error) {
+
+      }
+    } 
   }
   const updateUserInfo = async () => {
     try {
       const formData = new FormData();
-      // formData.append('videoFile', file!)
+      formData.append('avatar', file!)
       formData.append('displayedName', displayedName!);
       formData.append('bio', userBio!);
       const response = await axiosInstance.post('/User/upload', formData, {
@@ -62,10 +85,14 @@ const EditProfile = (props: ProfileEditorProps) => {
       });
       if (response.status === 200) {
         dispatch(setLoggedOut())
-        toast.success("Edit user successfully, you have to log in again!", {
+        toast.success("Edit user successfully,", {
           autoClose: 1000,
-          theme: 'colored'
+          theme: 'colored',
+          style: {
+            fontSize: '16px',
+          }
         })
+        alert("You have to log in again")
         window.location.reload();
       }
     }
@@ -73,7 +100,6 @@ const EditProfile = (props: ProfileEditorProps) => {
       console.log(error);
     }
   }
-  console.log(userBio)
   return (
     <>
       <ToastContainer />

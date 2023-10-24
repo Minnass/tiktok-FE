@@ -5,6 +5,7 @@ import { VideoModel } from '../../../model'
 import { BASEAPIURL, BASEURL } from '../../../const/baseUrl'
 
 const PostSearching = (post: VideoModel) => {
+
     const navigator = useNavigate()
     useEffect(() => {
         const video = document.getElementById(`video${post?.videoId}`) as HTMLVideoElement
@@ -36,7 +37,8 @@ const PostSearching = (post: VideoModel) => {
                         navigator(`/${post.user?.userName}`)
                     }}
                 >
-                    <img width={30} className=' rounded-full cursor-pointer' src={require('../../../utils/user.png')} />
+                    <img width={30} className=' rounded-full cursor-pointer' 
+                   src={post.user?.avatar? `${BASEURL}${post.user.avatar}` :require('../../../utils/user.png')} />
                     <p className='text-white cursor-pointer text-[15px] hover:underline ml-1 truncate'>{post.user?.userName}</p>
                 </div>
             </div>
