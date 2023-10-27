@@ -18,6 +18,7 @@ import { FollowRequest } from '../../model/FollowRequest'
 import axiosInstance from '../../aixos/axios'
 import { addFollowing, removeFollowing, selectFollowingUser } from '../../store/following'
 import { useNavigate } from 'react-router-dom'
+import FollowService from '../../service/followService'
 
 const CommentHeader = (item: VideoItem) => {
     const baseUrl = BASEAPIURL;
@@ -46,25 +47,24 @@ const CommentHeader = (item: VideoItem) => {
             followerId: userInfo?.userId,
             followedId: item.profile?.userID
         }
-        axiosInstance.post('Follow', followRequest)
-            .then((response) => {
-                if (hasFollowed) {
-                    dispatch(removeFollowing(item.profile?.userID!));
+        FollowService.followOrUnFollow(followRequest)
+            .then((status) => {
+                if (status) {
+                    if (hasFollowed) {
+                        dispatch(removeFollowing(item.profile?.userID!));
+                    }
+                    else {
+                        dispatch(addFollowing({
+                            avatar: item.profile?.avatar,
+                            displayedName: item.profile?.displayedName,
+                            userName: item.profile?.userName,
+                            userId: item.profile?.userID
+                        }));
+                    }
+                    setHasFollowed(prev => !prev);
                 }
-                else {
-                    dispatch(addFollowing({
-                        avatar: item.profile?.avatar,
-                        displayedName: item.profile?.displayedName,
-                        userName: item.profile?.userName,
-                        userId: item.profile?.userID
-                    }));
-                }
-                setHasFollowed(prev => !prev);
-                console.log('Thanh cong')
             })
-            .catch((error) => {
-                console.log("That bai");
-            });
+            .catch((error) => console.log(error))
     }
 
     const likeOrUnlike = () => {

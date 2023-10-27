@@ -6,18 +6,18 @@ import { MenuItemModel, UserInfomation } from '../../model'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { selectIsLoggedIn } from '../../store/auth'
-import axiosInstance from '../../aixos/axios'
 import { FollowingCollection } from '../../model/collection/pagedFollowingCollection'
 import { getUserInfo } from '../../service/userService'
-import { error } from 'console'
 import { BASEAPIURL } from '../../const/baseUrl'
 import axios from 'axios'
 import { SuggestedUser } from '../../model/collection/suggestedUser'
+import { selectFollowingUser } from '../../store/following'
 const Sidebar = () => {
   const baseUrl = BASEAPIURL;
   const navigator = useNavigate();
   const userInfo = getUserInfo();
   const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
+  const followingUser = useSelector((state: RootState) => selectFollowingUser(state));
   const [followingPageNumber, setFollowingPageNumber] = useState<number>(1);
   const [suggestedPageNumber, setSuggestedPageNumber] = useState<number>(1);
   const [itemsMenu, setItemsMenu] = useState<MenuItemModel[]>([
@@ -31,7 +31,6 @@ const Sidebar = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Update the active item based on the current route
     setItemsMenu((prevItems) =>
       prevItems.map((item) => ({
         ...item,
@@ -67,6 +66,7 @@ const Sidebar = () => {
   }, [isLoggedIn, followingPageNumber]);
 
   useEffect(() => {
+    console.log('daada');
     const model: SuggestedUser = {
       userId: userInfo?.userId,
       pageNumber: suggestedPageNumber,
@@ -87,8 +87,7 @@ const Sidebar = () => {
         .then((response) => {
           const suggestedUsers: UserInfomation[] = response.data.data;
           const notFollowingSuggestedUsers = suggestedUsers.filter(suggestedUser => {
-            // Check if the suggested user's userId is not in the followingUsers array
-            return !followingUsers.some(followingUser => followingUser.userId === suggestedUser.userId)
+            return !followingUser.some(user => user.userId === suggestedUser.userId)
               ;
           });
           setSuggestedUser(notFollowingSuggestedUsers);
@@ -97,7 +96,7 @@ const Sidebar = () => {
           console.log(error);
         });
     }
-  }, [isLoggedIn, suggestedPageNumber, followingUsers]);
+  }, [isLoggedIn, suggestedPageNumber,followingUser]);
 
   return (
     <>

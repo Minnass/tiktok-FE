@@ -14,6 +14,7 @@ import { RootState } from '../../store/store';
 import { addFollowing, removeFollowing } from '../../store/following';
 import axios from 'axios';
 import { BASEAPIURL, BASEURL } from '../../const/baseUrl';
+import FollowService from '../../service/followService';
 
 export const ProfilePage = () => {
     const userInfo = getUserInfo();
@@ -75,33 +76,25 @@ export const ProfilePage = () => {
             dispatch(setLoginRequestStatus(true))
         }
         else {
-
-            const token = localStorage.getItem('token');
-            const _axios = axios.create({
-                baseURL: BASEAPIURL,
-                headers: {
-                    'Authorization': `Bearer ${token}`, // Add the Bearer token to the request header
-                    'Content-Type': 'application/json', // Set the content type if needed
-                },
-            });
             const followRequest: FollowRequest = {
                 followerId: userInfo?.userId,
                 followedId: user?.userId
             };
-
-            _axios.post('Follow', followRequest)
-                .then((response) => {
-                    if (isFollowing) {
-                        dispatch(removeFollowing((user?.userId)!));
+            FollowService.followOrUnFollow(followRequest)
+                .then((status) => {
+                    if (status) {
+                        if (isFollowing) {
+                            dispatch(removeFollowing((user?.userId)!));
+                        }
+                        else {
+                            dispatch(addFollowing(user!));
+                        }
+                        setIsFollowing(prev => !prev)
                     }
-                    else {
-                        dispatch(addFollowing(user!));
-                    }
-                    setIsFollowing(prev => !prev)
                 })
                 .catch((error) => {
-                    console.log("That bai");
-                });
+                    console.log(error);
+                })
         }
 
     };

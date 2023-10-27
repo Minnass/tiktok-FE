@@ -8,6 +8,7 @@ import { BASEAPIURL, BASEURL } from '../../../const/baseUrl';
 import { addFollowing, removeFollowing, selectFollowingUser, setFollowing } from '../../../store/following';
 import { RootState } from '../../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
+import FollowService from '../../../service/followService';
 
 const FollowItem = (props: FollowItemProps) => {
   const dispatch = useDispatch()
@@ -18,32 +19,24 @@ const FollowItem = (props: FollowItemProps) => {
     setIsFollowing(followingUser.some(user => user.userId === props.user.userId!))
   }, [followingUser])
   const followOrUnFollow = (userId: number) => {
-    const token = localStorage.getItem('token');
-    const _axios = axios.create({
-      baseURL: BASEAPIURL,
-      headers: {
-        'Authorization': `Bearer ${token}`, // Add the Bearer token to the request header
-        'Content-Type': 'application/json', // Set the content type if needed
-      },
-    });
     const followRequest: FollowRequest = {
       followerId: userInfo?.userId,
       followedId: userId
     };
-
-
-    _axios.post('Follow', followRequest)
-      .then((response) => {
-        if (isFollowing) {
-          console.log('ok')
-          dispatch(removeFollowing((props.user?.userId)!));
+    FollowService.followOrUnFollow(followRequest)
+      .then((status) => {
+        if (status) {
+          console.log('OK')
+          if (isFollowing) {
+            dispatch(removeFollowing((props.user?.userId)!));
+          }
+          else {
+            dispatch(addFollowing(props.user));
+          }
+          setIsFollowing(prev => !prev);
         }
-        else {
-          dispatch(addFollowing(props.user));
-        }
-        setIsFollowing(prev => !prev);
       })
-      .catch((error) => { })
+      .catch((error) => { console.log(error) })
   };
 
   const navigator = useNavigate();

@@ -59,7 +59,7 @@ const Register = (props: RegisterProps) => {
       axiosInstance.post('/Account/SignUp', registerQuest)
         .then((response) => {
           if (response.status === 200) {
-            console.log(response);
+          
             setLoading(false)
             props.successfulRegisterListener();
           }

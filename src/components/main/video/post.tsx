@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { VideoItem } from '../../../types'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link,  useNavigate } from 'react-router-dom';
 import { AiFillHeart } from 'react-icons/ai';
 import { ImMusic } from 'react-icons/im';
 import PostMainLike from '../postMainLike/postMainLike';
@@ -9,9 +9,9 @@ import { getUserInfo } from '../../../service/userService';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { addFollowing, removeFollowing, selectFollowingUser } from '../../../store/following';
-import axiosInstance from '../../../aixos/axios';
 import { FollowRequest } from '../../../model/FollowRequest';
-import { BASEAPIURL, BASEURL } from '../../../const/baseUrl';
+import {  BASEURL } from '../../../const/baseUrl';
+import FollowService from '../../../service/followService';
 
 const PostMain = (post: VideoItem) => {
     const navigator = useNavigate();
@@ -30,7 +30,7 @@ const PostMain = (post: VideoItem) => {
         }
     }, []);
     useEffect(() => {
-        setHasFollowed(followingUser.some(x => x.userId===
+        setHasFollowed(followingUser.some(x => x.userId ===
             post.profile?.userID
         ))
     }, [followingUser]);
@@ -39,24 +39,26 @@ const PostMain = (post: VideoItem) => {
             followerId: userInfo?.userId,
             followedId: post.profile?.userID
         }
-        axiosInstance.post('Follow', followRequest)
-            .then((response) => {
-                if (hasFollowed) {
-                    dispatch(removeFollowing(post.profile?.userID!));
+        FollowService.followOrUnFollow(followRequest)
+            .then((status) => {
+                if (status) {
+                    if (hasFollowed) {
+                        dispatch(removeFollowing(post.profile?.userID!));
+                    }
+                    else {
+                        dispatch(addFollowing({
+                            avatar: post.profile?.avatar,
+                            displayedName: post.profile?.displayedName,
+                            userName: post.profile?.userName,
+                            userId: post.profile?.userID
+                        }));
+                    }
+                    setHasFollowed(prev => !prev);
                 }
-                else {
-                    dispatch(addFollowing({
-                        avatar: post.profile?.avatar,
-                        displayedName: post.profile?.displayedName,
-                        userName: post.profile?.userName,
-                        userId: post.profile?.userID
-                    }));
-                }
-                setHasFollowed(prev => !prev);
             })
             .catch((error) => {
-                console.log("That bai");
-            });
+                console.log(error)
+            })
     }
     return (
         <>
