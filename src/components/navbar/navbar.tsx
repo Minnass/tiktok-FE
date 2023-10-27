@@ -55,7 +55,7 @@ const Navbar = () => {
   }, [location])
   return (
     <>
-      <div id="TopNav" className='fixed bg-white z-30 flex items-center w-full border-b h-[60px] '>
+      <div id="TopNav" className='fixed bg-white z-30 top-0 flex items-center w-full border-b h-[60px] '>
         <div className={`flex items-center justify-between gap-6 w-full px-4 mx-auto  max-w-[1140px] `}>
           <Link to='/'>
             <img className='max-h-full w-[115px]' src={logo_path} alt='Logo' />
