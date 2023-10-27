@@ -17,6 +17,7 @@ import { getUserInfo } from '../../service/userService'
 import { FollowRequest } from '../../model/FollowRequest'
 import axiosInstance from '../../aixos/axios'
 import { addFollowing, removeFollowing, selectFollowingUser } from '../../store/following'
+import { useNavigate } from 'react-router-dom'
 
 const CommentHeader = (item: VideoItem) => {
     const baseUrl = BASEAPIURL;
@@ -31,9 +32,9 @@ const CommentHeader = (item: VideoItem) => {
     const followingUser = useSelector((state: RootState) => selectFollowingUser(state));
     const userInfo = getUserInfo();
     const [hasFollowed, setHasFollowed] = useState<boolean>(false);
-
+    const navigater = useNavigate();
     useEffect(() => {
-        setHasFollowed(followingUser.includes(item.profile?.userID!));
+        setHasFollowed(followingUser.some(user => user.userId === item.profile?.userID!));
     }, [followingUser])
 
     useEffect(() => {
@@ -51,7 +52,12 @@ const CommentHeader = (item: VideoItem) => {
                     dispatch(removeFollowing(item.profile?.userID!));
                 }
                 else {
-                    dispatch(addFollowing(item.profile?.userID!));
+                    dispatch(addFollowing({
+                        avatar: item.profile?.avatar,
+                        displayedName: item.profile?.displayedName,
+                        userName: item.profile?.userName,
+                        userId: item.profile?.userID
+                    }));
                 }
                 setHasFollowed(prev => !prev);
                 console.log('Thanh cong')
@@ -104,18 +110,22 @@ const CommentHeader = (item: VideoItem) => {
         <>
             <div className='md:px-5 md:py-6 px-3 py-3 w-full'>
                 <div className='rounded-xl bg-gray-100 p-3 text-[15px] text-left '>
-                    <div className='relative flex items-center '>
+                    <div className='relative flex items-center cursor-pointer '>
                         <img className='rounded-full'
                             width={40}
                             src={(item.profile?.avatar == null) ? require('../../utils/user.png') : `${BASEURL}${item.profile.avatar}`}
                             alt=''
                         />
-                        <div className='ml-2' >
-                            <div className='font-bold text-[18px]' >
+                        <div
+                            onClick={() => {
+                                navigater(`/${item.profile?.userName}`)
+                            }}
+                            className='ml-2' >
+                            <div className='font-bold text-[18px]  cursor-pointer' >
                                 {item.profile?.displayedName}
                             </div>
-                            <div className='flex items-center font-light text-[14px]'>
-                                <p>
+                            <div className='flex items-center font-light text-[14px] '>
+                                <p className='hover:underline'>
                                     {item.profile?.userName}
                                 </p>
                                 <p className='ml-2'>

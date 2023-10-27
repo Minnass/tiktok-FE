@@ -14,6 +14,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
 import { setLoggedOut } from '../../store/auth'
 import Image from "image-js";
+import { BASEURL } from '../../const/baseUrl'
 const EditProfile = (props: ProfileEditorProps) => {
   const user = getUserInfo();
   const [file, setFile] = useState<File | null>(null);
@@ -70,7 +71,7 @@ const EditProfile = (props: ProfileEditorProps) => {
       catch (error) {
 
       }
-    } 
+    }
   }
   const updateUserInfo = async () => {
     try {
@@ -136,7 +137,7 @@ const EditProfile = (props: ProfileEditorProps) => {
                   </h3>
                   <div className="flex items-center justify-center sm:-mt-6">
                     <label htmlFor="image" className="relative cursor-pointer"   >
-                      <img className="rounded-full" width="95" src={(userImage != null) ? userImage : require('../../utils/user.png')} />
+                      <img className="rounded-full" width="95" src={(userImage != null) ? `${BASEURL}${userImage}` : require('../../utils/user.png')} />
                       <button className=" absolute bottom-0 right-0 rounded-full bg-white shadow-xl border p-1 border-gray-300 inline-block w-[32px] h-[32px]
                       "
                         onClick={() =>

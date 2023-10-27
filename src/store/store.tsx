@@ -4,6 +4,7 @@ import likedVideosReducer from './likedVideos'
 import nextRouterReducer from './nextRouter';
 import loadingReducer from './loading'
 import followingsReducer from './following'
+import searchReducer from './search'
 
 const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
     likedVideos: likedVideosReducer,
     nextRouter:nextRouterReducer,
     loading:loadingReducer,
-    following:followingsReducer
+    following:followingsReducer,
+    search:searchReducer
   },
   // ...other store configuration options
 });

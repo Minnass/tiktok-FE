@@ -14,6 +14,8 @@ import { setLikedVideos } from './store/likedVideos';
 import { setFollowing } from './store/following';
 import VideoSearch from './pages/searchPage/videoSearch';
 import AccountSearch from './pages/searchPage/accountSearch';
+import { setSearchs } from './store/search';
+import SearchService from './service/searchService';
 
 function App() {
   const isLoading = useSelector((state: RootState) => selectIsLoading(state))
@@ -41,6 +43,11 @@ function App() {
         .catch((error) => {
           console.log('Get followers faced error');
         })
+      SearchService.getAllKeyWords(userInfo?.userId!)
+        .then((data) => {
+          dispatch(setSearchs(data))
+        })
+        .catch((error) => { console.log(error) })
     }
   }, [isLoggedIn])
 

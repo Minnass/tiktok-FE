@@ -11,13 +11,9 @@ import { motion } from 'framer-motion'
 import { BASEURL } from '../../const/baseUrl'
 const SingleComment = ({ created_at, text, user, id, deleteHandler }: SingleCommentProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
-  const [hasPopUp, setHasPopUp] = useState<boolean>(false)
   const userInfo = getUserInfo();
   const date = new Date(created_at!);
   var value = getDateString(date);
-  const showPopup = () => {
-    setHasPopUp(true);
-  }
   const deleteComment = () => {
     setIsDeleting(true);
     axiosInstance.delete(`/Comment/${id}`)
@@ -32,33 +28,7 @@ const SingleComment = ({ created_at, text, user, id, deleteHandler }: SingleComm
   }
   return (
     <>
-      {hasPopUp &&
-        <motion.div
-          initial={
-            {
-              scale: 0
-            }
-          }
-          animate={{
-            scale: 1
-          }}
-          className="fixed flex items-center justify-center z-10 top-0 left-0 w-full h-full bg-black bg-opacity-50">
-          <div className='relative text-center bg-white w-full max-w-[350px] p-4 z-50 rounded-lg'>
-            <p className='font-bold'>Warning</p>
-            <p className='text-gray-500 text-[15px] font-thin mb-6'>Do you want to delete this comment?</p>
-            <button className='bg-[#ff2e2e] w-full border text-[20px] rounded-sm py-2 font-bold text-white hover:bg-red-600'
-              onClick={() => deleteComment()}
-            >
-              Delete
-            </button>
-            <button className='text-[16px] hover:bg-gray-100 rounded-sm  py-2 border w-full mt-3 '
-              onClick={() => setHasPopUp(false)}
-            >
-              Discard
-            </button>
-          </div>
-
-        </motion.div>}
+  
       <div id="SingleComment" className="flex items-center justify-between px-8 mt-4">
         <div className="flex items-center relative w-full">
           <Link to={`/${user?.userName}`}>
@@ -79,7 +49,7 @@ const SingleComment = ({ created_at, text, user, id, deleteHandler }: SingleComm
               {userInfo?.userId === user?.userId ? (
                 <button
                   disabled={isDeleting}
-                  onClick={() => showPopup()}
+                  onClick={() => deleteComment()}
                 >
                   {
                     isDeleting ? (

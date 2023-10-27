@@ -30,7 +30,9 @@ const PostMain = (post: VideoItem) => {
         }
     }, []);
     useEffect(() => {
-        setHasFollowed(followingUser.includes(post.profile?.userID!))
+        setHasFollowed(followingUser.some(x => x.userId===
+            post.profile?.userID
+        ))
     }, [followingUser]);
     const followOrUnFollow = () => {
         const followRequest: FollowRequest = {
@@ -43,7 +45,12 @@ const PostMain = (post: VideoItem) => {
                     dispatch(removeFollowing(post.profile?.userID!));
                 }
                 else {
-                    dispatch(addFollowing(post.profile?.userID!));
+                    dispatch(addFollowing({
+                        avatar: post.profile?.avatar,
+                        displayedName: post.profile?.displayedName,
+                        userName: post.profile?.userName,
+                        userId: post.profile?.userID
+                    }));
                 }
                 setHasFollowed(prev => !prev);
             })

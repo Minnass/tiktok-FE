@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FollowItemProps } from '../../../types/followItemProps';
 import { getUserInfo } from '../../../service/userService';
 import axios from 'axios';
-import { BASEAPIURL } from '../../../const/baseUrl';
+import { BASEAPIURL, BASEURL } from '../../../const/baseUrl';
 import { addFollowing, removeFollowing, selectFollowingUser, setFollowing } from '../../../store/following';
 import { RootState } from '../../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +15,7 @@ const FollowItem = (props: FollowItemProps) => {
   const followingUser = useSelector((state: RootState) => selectFollowingUser(state));
   const userInfo = getUserInfo();
   useEffect(() => {
-    setIsFollowing(followingUser.includes(props.user.userId!))
+    setIsFollowing(followingUser.some(user => user.userId === props.user.userId!))
   }, [followingUser])
   const followOrUnFollow = (userId: number) => {
     const token = localStorage.getItem('token');
@@ -39,7 +39,7 @@ const FollowItem = (props: FollowItemProps) => {
           dispatch(removeFollowing((props.user?.userId)!));
         }
         else {
-          dispatch(addFollowing((props.user?.userId)!));
+          dispatch(addFollowing(props.user));
         }
         setIsFollowing(prev => !prev);
       })
@@ -56,7 +56,9 @@ const FollowItem = (props: FollowItemProps) => {
       }
     >
       <div className='flex'>
-        <img src={(props.user.avatar == null) ? require('../../../utils/user.png') : props.user.avatar} height={48} width={48} />
+        <img
+          className='rounded-full object-cover'
+          src={(props.user.avatar == null) ? require('../../../utils/user.png') : `${BASEURL}${props.user.avatar}`} height={48} width={48} />
         <div className='max-w-[200px] ml-3'>
           <p className='text-[16px] font-extrabold truncate'>
             {props.user.displayedName}

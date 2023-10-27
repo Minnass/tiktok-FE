@@ -16,7 +16,8 @@ const FollowingPage = () => {
       dispatch(setLoginRequestStatus(true))
     }
     else{
-      axiosInstance.post(`Post/getFollowing`,followingUser)
+      const model:number[]=followingUser.map((obj)=>obj.userId!);
+      axiosInstance.post(`Post/getFollowing`,model)
       .then((response) => {
         if (response.status === 200) {
           setVideoList(response.data.data)

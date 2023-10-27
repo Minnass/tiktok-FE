@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { UserInfomation } from '../../model';
 import axios from 'axios';
 import { error } from 'console';
-import { BASEAPIURL } from '../../const/baseUrl';
+import { BASEAPIURL, BASEURL } from '../../const/baseUrl';
 
 const AccountSearch = () => {
     const navigator = useNavigate();
@@ -34,7 +34,7 @@ const AccountSearch = () => {
                         onClick={() => navigator(`/${item.userName!}`)}
                         className='
                     flex items-center p-3 cursor-pointer hover:bg-gray-200'>
-                        <img height={60} width={60} className='rounded-full h-full ' src={(item.avatar != null) ? item.avatar : require('../../utils/user.png')} />
+                        <img height={60} width={60} className='rounded-full h-full ' src={(item.avatar != null) ? `${BASEURL}${item.avatar}` : require('../../utils/user.png')} />
                         <div className='flex h-full flex-col ml-3 w-full'>
                             <p className='font-bold truncate text-[17px]'>{item.displayedName}</p>
                             <p className='font-extralight truncate text-[15px]'>{item.userName}</p>

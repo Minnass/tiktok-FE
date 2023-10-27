@@ -17,7 +17,6 @@ const VideoSearch = () => {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json', // Set the content type if needed
-
       },
     });
     _axios.get(`Post/getAll/${query}`)
@@ -27,7 +26,7 @@ const VideoSearch = () => {
       .catch((error) => {
         console.log(error)
       });
-  }, [])
+  }, [search])
   return (
     <div className='mt-5 grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-2 gap-5'>
       {videoList.map((item, index) => (

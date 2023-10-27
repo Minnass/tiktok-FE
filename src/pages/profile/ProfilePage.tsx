@@ -95,7 +95,7 @@ export const ProfilePage = () => {
                         dispatch(removeFollowing((user?.userId)!));
                     }
                     else {
-                        dispatch(addFollowing((user?.userId)!));
+                        dispatch(addFollowing(user!));
                     }
                     setIsFollowing(prev => !prev)
                 })

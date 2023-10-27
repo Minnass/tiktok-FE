@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import { UserInfomation } from "../model";
 
 export const getUserInfo = () => {
