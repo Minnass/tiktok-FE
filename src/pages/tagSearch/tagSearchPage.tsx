@@ -4,8 +4,11 @@ import { useParams } from 'react-router-dom'
 import PostSearching from '../../components/main/video/postHasTagSearching';
 import axiosInstance from '../../aixos/axios';
 import { VideoModel } from '../../model';
+import { setCurrentVideos, setPreviousRoute } from '../../store/currentListVideo';
+import { useDispatch } from 'react-redux';
 const TagSearchPage = () => {
     const { tagName } = useParams();
+    const dispatch=useDispatch();
     const [videoList,setVideoList]=useState<VideoModel[]>([])
     useEffect(() => {
         axiosInstance.get(`Post/GetVideosByTagName/${tagName}`)
@@ -17,6 +20,10 @@ const TagSearchPage = () => {
                 console.log(error)
             })
     }, [])
+    useEffect(()=>{
+        dispatch(setCurrentVideos(videoList));
+        dispatch(setPreviousRoute(`/tag/${tagName}`));
+    },[videoList])
     return (
         <DefaultLayout>
             <div className='text-[32px] font-bold lg:ml-[310px] ml-[75px] p-3'>

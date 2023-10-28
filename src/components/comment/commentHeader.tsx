@@ -41,7 +41,7 @@ const CommentHeader = (item: VideoItem) => {
     useEffect(() => {
         setUserLiked(likedVideos.includes(item.videoId!));
     }, [likedVideos]);
-    console.log(likedVideos);
+
     const followOrUnFollow = () => {
         const followRequest: FollowRequest = {
             followerId: userInfo?.userId,

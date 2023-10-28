@@ -4,8 +4,7 @@ import { MenuProps } from '../../../types/menuProps'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getUserInfo } from '../../../service/userService'
-import { selectIsLoggedIn, setLoggedOut } from '../../../store/auth'
-import { RootState } from '../../../store/store'
+import {  setLoggedOut } from '../../../store/auth'
 
 const Menu = (props: MenuProps) => {
     const dispatch = useDispatch()

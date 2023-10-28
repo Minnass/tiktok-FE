@@ -5,6 +5,7 @@ import nextRouterReducer from './nextRouter';
 import loadingReducer from './loading'
 import followingsReducer from './following'
 import searchReducer from './search'
+import currentVideosReducer from './currentListVideo'
 
 const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
     nextRouter:nextRouterReducer,
     loading:loadingReducer,
     following:followingsReducer,
-    search:searchReducer
+    search:searchReducer,
+    currentVideosReducer
   },
   // ...other store configuration options
 });

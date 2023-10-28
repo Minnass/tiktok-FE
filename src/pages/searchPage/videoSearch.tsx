@@ -4,11 +4,15 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { BASEAPIURL } from '../../const/baseUrl';
 import { VideoModel } from '../../model';
+import { setCurrentVideos, setPreviousRoute } from '../../store/currentListVideo';
+import { useDispatch } from 'react-redux';
 
 const VideoSearch = () => {
+  const location = useLocation();
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
   const query = queryParams.get('q');
+  const dispatch = useDispatch();
   const [videoList, setVideoList] = useState<VideoModel[]>([]);
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -27,6 +31,10 @@ const VideoSearch = () => {
         console.log(error)
       });
   }, [search])
+  useEffect(() => {
+    dispatch(setCurrentVideos(videoList));
+    dispatch(setPreviousRoute(`${location.pathname}`));
+  }, [videoList])
   return (
     <div className='mt-5 grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-2 gap-5'>
       {videoList.map((item, index) => (

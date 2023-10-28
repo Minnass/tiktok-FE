@@ -15,6 +15,7 @@ import { addFollowing, removeFollowing } from '../../store/following';
 import axios from 'axios';
 import { BASEAPIURL, BASEURL } from '../../const/baseUrl';
 import FollowService from '../../service/followService';
+import { setCurrentVideos, setPreviousRoute } from '../../store/currentListVideo';
 
 export const ProfilePage = () => {
     const userInfo = getUserInfo();
@@ -34,7 +35,7 @@ export const ProfilePage = () => {
         axiosInstance.get(`Post/GetLikedVideos/${user?.userId}`)
             .then((response) => {
                 setVideoList(response.data.data);
-                console.log(response.data.data)
+              
             })
             .catch((error) => {
                 console.log(error);
@@ -51,6 +52,11 @@ export const ProfilePage = () => {
                 });
         }
     }
+    useEffect(()=>{
+        const videoIds=videoList.map((video)=>video.videoId) as number[];
+        dispatch(setCurrentVideos(videoList));
+        dispatch(setPreviousRoute(`/${user?.userName}`));
+    },[videoList])
 
     useEffect(() => {
         axiosInstance.get(`User/getUserInfo/${userName}`)

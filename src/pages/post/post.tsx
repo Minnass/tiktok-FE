@@ -7,12 +7,22 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { VideoModel } from '../../model'
 import axiosInstance from '../../aixos/axios'
 import { BASEAPIURL, BASEURL } from '../../const/baseUrl'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store/store'
+import { selectCurrentVideos, selectPreviousRoute } from '../../store/currentListVideo'
+import { parseNumber } from 'react-advanced-cropper'
 
 const PostPage = () => {
   const navigator = useNavigate();
-  const [hasPopUp, setHasPopUp] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const { postID } = useParams();
+
   const [post, setPost] = useState<VideoModel | null>(null);
+  const currentVideos = useSelector((state: RootState) => selectCurrentVideos(state));
+  const previousRoute = useSelector((state: RootState) => selectPreviousRoute(state));
+  useEffect(() => {
+
+  }, [currentVideos])
   const fetchData = () => {
     axiosInstance.get(`Post/${postID}`)
       .then((response) => {
@@ -25,8 +35,20 @@ const PostPage = () => {
   }
   useEffect(() => {
     fetchData();
-  }, []);
-
+  }, [postID]);
+  useEffect(() => {
+    const index = currentVideos?.findIndex(x => x.videoId === parseNumber(postID!))
+    setCurrentIndex(index!);
+  }, [postID])
+  const gotoPreviousVideo = () => {
+    const previousVideo = currentVideos![currentIndex! - 1];
+    navigator(`/${previousVideo.user?.userName}/${previousVideo.videoId}`)
+  }
+  const gotoNextVideo = () => {
+    const nextVideo = currentVideos![currentIndex! + 1];
+    console.log(nextVideo);
+    navigator(`/${nextVideo.user?.userName}/${nextVideo.videoId}`)
+  }
   return (
     <>
       <div
@@ -36,25 +58,29 @@ const PostPage = () => {
         <div className="lg:w-[calc(100%-540px)] h-full  relative">
           <button
             onClick={() => {
-              navigator(-1);
+              navigator(previousRoute);
             }
             }
             className="absolute text-white cursor-pointer z-20 m-5 top-0 left-0 rounded-full bg-gray-700 p-1.5 hover:bg-gray-800">
             <AiOutlineClose size="27" />
           </button>
           <div >
-            <button
-              // onClick={() => loopThroughPostsUp()}
-              className="absolute z-20 right-4 top-4 flex items-center justify-center rounded-full bg-gray-700 p-1.5 hover:bg-gray-800"
-            >
-              <BiChevronUp size="30" color="#FFFFFF" />
-            </button>
-            <button
-              // onClick={() => loopThroughPostsDown()}
-              className="absolute z-20 right-4 top-20 flex items-center justify-center rounded-full bg-gray-700 p-1.5 hover:bg-gray-800"
-            >
-              <BiChevronDown size="30" color="#FFFFFF" />
-            </button>
+            {currentIndex != 0 &&
+              <button
+                onClick={gotoPreviousVideo}
+                className="absolute z-20 right-4 top-4 flex items-center justify-center rounded-full bg-gray-700 p-1.5 hover:bg-gray-800"
+              >
+                <BiChevronUp size="30" color="#FFFFFF" />
+              </button>
+            }
+            {currentIndex != currentVideos?.length! - 1 &&
+              <button
+                onClick={gotoNextVideo}
+                className="absolute z-20 right-4 top-20 flex items-center justify-center rounded-full bg-gray-700 p-1.5 hover:bg-gray-800"
+              >
+                <BiChevronDown size="30" color="#FFFFFF" />
+              </button>
+            }
           </div>
 
           {true ? (

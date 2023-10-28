@@ -5,11 +5,12 @@ import { useState } from 'react'
 import { VideoModel } from '../../model'
 import { getUserInfo } from '../../service/userService'
 import { selectIsLoggedIn, } from '../../store/auth'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { useLocation } from 'react-router-dom'
+import { selectPreviousRoute, setCurrentVideos, setPreviousRoute } from '../../store/currentListVideo'
 export const HomePage = () => {
-  
+  const dispatch=useDispatch();
   const [searh, setSearch] = useState<string | null>(null)
   const [videoList, setVideoList] = useState<VideoModel[]>([])
   const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
@@ -23,6 +24,10 @@ export const HomePage = () => {
         console.error('Error fetching data:', error);
       })
   }, [isLoggedIn])
+  useEffect(()=>{
+   dispatch(setCurrentVideos(videoList));
+   dispatch(setPreviousRoute('/'));
+  },[videoList])
   return (
     <DefaultLayout>
       <div className='w-[calc(100%-90px)] max-w-[690px] ml-auto '  >
