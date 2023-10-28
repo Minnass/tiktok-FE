@@ -16,7 +16,9 @@ export default function AuthOverlay() {
         toast.success("You registered successfully", {
             autoClose: 1000,
             theme: 'colored',
-            style: { fontStyle: '14px' }
+            style: {
+                fontSize: '16px',
+            }
         })
         setIsRegister(false)
     }

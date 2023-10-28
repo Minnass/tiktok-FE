@@ -22,7 +22,7 @@ const PostSearch = (post: VideoModel) => {
     <div className='w-full'>
       <div className=" brightness-90 hover:brightness-[1.1] cursor- ">
         <div className='relative'>
-          <Link to={`/${post.user?.userId}/${post.videoId}`}>
+          <Link to={`/${post.user?.userName}/${post.videoId}`}>
             <video
               id={`video${post.videoId}`}
               muted
@@ -50,7 +50,11 @@ const PostSearch = (post: VideoModel) => {
             }
           </div>
         </div>
-        <div className='flex'>
+        <div className='flex items-center cursor-pointer'
+        onClick={()=>{
+          navigator(`/${post.user?.userName}`)
+        }}
+        >
           <img height={30} width={30} className='rounded-full h-full ' 
            src={post.user?.avatar? `${BASEURL}${post.user.avatar}` :require('../../../utils/user.png')}
           />

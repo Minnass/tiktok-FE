@@ -20,7 +20,8 @@ const EditProfile = (props: ProfileEditorProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [cropper, setCropper] = useState<CropperDimensions | null>(null);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const [userImage, setUserImage] = useState<string | null>(user?.avatar!);
+  const temp=(user?.avatar==null)?null:`${BASEURL}${user.avatar}`;
+  const [userImage, setUserImage] = useState<string | null>(temp);
   const [displayedName, setUserName] = useState<string | null>(user?.displayedName!);
   const [userBio, setUserBio] = useState<string | undefined>(user?.bio);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -137,7 +138,7 @@ const EditProfile = (props: ProfileEditorProps) => {
                   </h3>
                   <div className="flex items-center justify-center sm:-mt-6">
                     <label htmlFor="image" className="relative cursor-pointer"   >
-                      <img className="rounded-full" width="95" src={(userImage != null) ? `${BASEURL}${userImage}` : require('../../utils/user.png')} />
+                      <img className="rounded-full" width="95" src={(userImage) ? `${userImage}` : require('../../utils/user.png')} />
                       <button className=" absolute bottom-0 right-0 rounded-full bg-white shadow-xl border p-1 border-gray-300 inline-block w-[32px] h-[32px]
                       "
                         onClick={() =>

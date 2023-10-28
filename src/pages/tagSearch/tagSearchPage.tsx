@@ -10,6 +10,7 @@ const TagSearchPage = () => {
     useEffect(() => {
         axiosInstance.get(`Post/GetVideosByTagName/${tagName}`)
             .then((response) => {
+                console.log(response.data.data);
                 setVideoList(response.data.data)
             })
             .catch((error) => {
@@ -32,6 +33,7 @@ const TagSearchPage = () => {
                         videoId={video.videoId}
                         hasTag={video.hasTag}
                         key={index}
+                        videoUrl={video.videoUrl}
                         user={video.user}
                         />
                     ))

@@ -19,6 +19,7 @@ const PostSearching = (post: VideoModel) => {
             video.removeEventListener('mouseleave', () => video.pause())
         }
     }, [])
+    console.log(post.videoUrl)
     return (
         <div className=" brightness-90 hover:brightness-[1.1] cursor- w-full">
             <div className='relative'>

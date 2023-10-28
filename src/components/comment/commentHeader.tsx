@@ -41,7 +41,7 @@ const CommentHeader = (item: VideoItem) => {
     useEffect(() => {
         setUserLiked(likedVideos.includes(item.videoId!));
     }, [likedVideos]);
-
+    console.log(likedVideos);
     const followOrUnFollow = () => {
         const followRequest: FollowRequest = {
             followerId: userInfo?.userId,
@@ -75,20 +75,20 @@ const CommentHeader = (item: VideoItem) => {
         const likeModel: LikeModel = { userId: userInfo?.userId, videoId: item.videoId }
         const token = localStorage.getItem('token');
         const _axios = axios.create({
-            baseURL: baseUrl,
+            baseURL: BASEAPIURL,
             headers: {
                 'Authorization': `Bearer ${token}`, // Add the Bearer token to the request header
                 'Content-Type': 'application/json', // Set the content type if needed
             },
         });
 
-        _axios.post(`${baseUrl}Like/like`, likeModel)
+        _axios.post(`Like/like`, likeModel)
             .then((response) => {
                 if (userLiked) {
-                    dispatch(addLikedVideo(item.videoId!))
+                    dispatch(removeLikedVideo(item.videoId!))
                 }
                 else {
-                    dispatch(removeLikedVideo(item.videoId!))
+                    dispatch(addLikedVideo(item.videoId!))
                 }
             })
             .catch((error) => {
@@ -104,7 +104,6 @@ const CommentHeader = (item: VideoItem) => {
             }, 200);
             setLikes(likes => likes + 1);
         }
-        setUserLiked(prev => !prev)
     }
     return (
         <>
@@ -161,7 +160,7 @@ const CommentHeader = (item: VideoItem) => {
                             {!updating ? (<AiFillHeart color={userLiked ? ('#ff2626') : ('')} size="20" />) :
                                 (<BiLoaderCircle className="animate-spin" size="20" />)}
                         </button>
-                        <p className='ml-2'>{item.likes}</p>
+                        <p className='ml-2'>{likes}</p>
                     </div>
                     <div className='flex ml-5 items-center'>
                         <button className='rounded-full bg-gray-200 p-2'>

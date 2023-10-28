@@ -1,10 +1,11 @@
 import React from 'react'
 import { BiCommentDetail, BiLogOut, BiUser } from 'react-icons/bi'
 import { MenuProps } from '../../../types/menuProps'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getUserInfo } from '../../../service/userService'
-import { setLoggedOut } from '../../../store/auth'
+import { selectIsLoggedIn, setLoggedOut } from '../../../store/auth'
+import { RootState } from '../../../store/store'
 
 const Menu = (props: MenuProps) => {
     const dispatch = useDispatch()
@@ -19,7 +20,11 @@ const Menu = (props: MenuProps) => {
                 <BiUser size='20' />
                 <span className='pl-2 font-semibold text-sm '>Edit Profile</span>
             </button>
-            <button className='flex items-center w-full justify-start py-3 px-2 hover:bg-gray-100 cursor-pointer'>
+            <button
+            onClick={()=>{
+                navigator('/feedback')
+            }}
+            className='flex items-center w-full justify-start py-3 px-2 hover:bg-gray-100 cursor-pointer'>
                 <BiCommentDetail size='20' />
                 <span className='pl-2 font-semibold text-sm'>Feed Back</span>
             </button>

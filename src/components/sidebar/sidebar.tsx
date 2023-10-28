@@ -12,6 +12,7 @@ import { BASEAPIURL } from '../../const/baseUrl'
 import axios from 'axios'
 import { SuggestedUser } from '../../model/collection/suggestedUser'
 import { selectFollowingUser } from '../../store/following'
+import { ToastContainer, toast } from 'react-toastify'
 const Sidebar = () => {
   const baseUrl = BASEAPIURL;
   const navigator = useNavigate();
@@ -66,7 +67,6 @@ const Sidebar = () => {
   }, [isLoggedIn, followingPageNumber]);
 
   useEffect(() => {
-    console.log('daada');
     const model: SuggestedUser = {
       userId: userInfo?.userId,
       pageNumber: suggestedPageNumber,
@@ -96,17 +96,29 @@ const Sidebar = () => {
           console.log(error);
         });
     }
-  }, [isLoggedIn, suggestedPageNumber,followingUser]);
+  }, [isLoggedIn, suggestedPageNumber, followingUser]);
 
   return (
     <>
+      <ToastContainer />
       <div className={`fixed z-20 bg-white  h-full  lg:border-r-0 border-r w-[75px] overflow-auto
       ${!true ? 'lg:w-[310px]' : 'lg:w-[220px]'}
       `}>
         <div className='lg:w-full w-[55px]'>
           {itemsMenu.map((item, index) => (
             <div className='cursor-pointer' key={index} onClick={() => {
-              navigator(item.link)
+              if (index !== 2) {
+                navigator(item.link)
+              }
+              else {
+                toast.warning("This feature will open soon", {
+                  autoClose: 1000,
+                  theme: 'colored',
+                  style: {
+                    fontSize: '16px',
+                  }
+                })
+              }
             }}>
               <MenuItem
                 sizeString='25'

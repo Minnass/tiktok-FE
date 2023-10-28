@@ -20,6 +20,7 @@ export const ProfilePage = () => {
     const userInfo = getUserInfo();
     const location = useLocation();
     const { userName } = useParams();
+    const [active, setActive] = useState<number>(1);
     const [user, setUser] = useState<UserInfomation | null>(null);
     const [videoList, setVideoList] = useState<VideoModel[]>([]);
     const [followSection, setFollowSection] = useState<FollowModel | null>(null);
@@ -29,6 +30,28 @@ export const ProfilePage = () => {
     const [followersMode, setFollowersMode] = useState<boolean>(false);
     const isLoggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
     const dispatch = useDispatch();
+    const fetchLikedsVideos = () => {
+        axiosInstance.get(`Post/GetLikedVideos/${user?.userId}`)
+            .then((response) => {
+                setVideoList(response.data.data);
+                console.log(response.data.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+    const fetchVideosForUser = () => {
+        if (user) {
+            axiosInstance.get(`Post/GetVideosForUser/${user?.userId}`)
+                .then((response) => {
+                    setVideoList(response.data.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }
+
     useEffect(() => {
         axiosInstance.get(`User/getUserInfo/${userName}`)
             .then((response) => {
@@ -39,16 +62,7 @@ export const ProfilePage = () => {
             });
     }, [location]);
     useEffect(() => {
-        if (user) {
-            axiosInstance.get(`Post/GetVideosForUser/${user?.userId}`)
-                .then((response) => {
-                    setVideoList(response.data.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
-
+        fetchVideosForUser();
     }, [user]);
     useEffect(() => {
         if (user) {
@@ -65,6 +79,7 @@ export const ProfilePage = () => {
         setIsFollowing(followSection?.followers.some(x => x.userId === getUserInfo()?.userId) || false);
     },
         [followSection]);
+
 
     const showPopUp = (mode: boolean) => {
         setHasFollowPopUp(true);
@@ -98,6 +113,8 @@ export const ProfilePage = () => {
         }
 
     };
+
+
 
     return (
         <DefaultLayout>
@@ -157,8 +174,22 @@ export const ProfilePage = () => {
                         </p>
 
                         <ul className="w-full flex items-center pt-4 border-b">
-                            <li className="w-60 text-center py-2 text-[17px] font-semibold border-b-2 border-b-black">Videos</li>
-                            <li className="w-60 text-gray-500 text-center py-2 text-[17px] font-semibold">Liked</li>
+                            <li
+                                onClick={() => {
+                                    if (active !== 1) {
+                                        setActive(1);
+                                        fetchVideosForUser();
+                                    }
+                                }}
+                                className={`w-60 cursor-pointer text-center py-2 text-[17px] font-semibold ${active === 1 ? ('border-b-black border-b-2 ') : (null)}`}>Videos</li>
+                            <li
+                                onClick={() => {
+                                    if (active !== 2) {
+                                        setActive(2);
+                                        fetchLikedsVideos();
+                                    }
+                                }}
+                                className={`w-60 cursor-pointer text-gray-500 text-center py-2 text-[17px]  ${active === 2 ? ('border-b-black border-b-2') : (null)} font-semibold`}>Liked</li>
                         </ul>
                         <div className="mt-4 grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3">
                             {videoList.map((video, index) => (

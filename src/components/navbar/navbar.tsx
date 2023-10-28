@@ -66,9 +66,6 @@ const Navbar = () => {
                 setSearchResultVisible(true);
               }}
               value={keyWord}
-              onBlur={() => {
-                // setSearchResultVisible(false);
-              }}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 setKeyWord(event.target.value);
               }}
